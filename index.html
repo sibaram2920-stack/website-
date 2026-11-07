@@ -73,7 +73,7 @@
         .tag { font-family: var(--font-main); font-size: 10.5px; padding: 3px 9px; border-radius: 999px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
         .tag.ongoing { background: rgba(255, 45, 85, 0.15); color: #ff5c7c; border: 1px solid rgba(255, 45, 85, 0.25); }
         .tag.completed { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.25); }
-        .tag.adult { background: rgba(244, 63, 94, 0.18); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+        .tag.Romance { background: rgba(244, 63, 94, 0.18); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
         .btn-primary { background: var(--accent-gradient); color: #ffffff; border: none; padding: 8px 16px; border-radius: 999px; font-family: var(--font-main); font-weight: 700; font-size: 12px; letter-spacing: 0.01em; cursor: pointer; box-shadow: 0 4px 14px var(--accent-glow); transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease; }
         .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 45, 85, 0.45); opacity: 0.96; }
         .btn-warning { background: linear-gradient(135deg, #ffb800 0%, #ff8a00 100%); color: #09090f; border: none; padding: 9px 16px; border-radius: 999px; font-family: var(--font-main); font-weight: 800; font-size: 12.5px; cursor: pointer; box-shadow: 0 4px 14px rgba(255, 184, 0, 0.28); transition: transform 0.18s ease, opacity 0.18s ease; }
@@ -301,7 +301,7 @@
                     <button class="tab active" onclick="selectCategory('all', this)">All Novels</button>
                     <button class="tab" onclick="selectCategory('ongoing', this)">🔄 Ongoing</button>
                     <button class="tab" onclick="selectCategory('completed', this)">📚 Completed</button>
-                    <button class="tab" onclick="selectCategory('adult', this)">🔞 Adult</button>
+                    <button class="tab" onclick="selectCategory('Romance', this)">❤️ Romance</button>
                     <button class="tab" id="subTabBtn" onclick="openSubscriptionTab(this)">💳 Subscription</button>
                     <button class="tab" onclick="openReviewModal(true)">⭐ User Reviews</button>
                 </div>
@@ -1934,7 +1934,7 @@
                 return;
             }
 
-            const iconMap = { ongoing: '🔄', completed: '📚', adult: '🔞' };
+            const iconMap = { ongoing: '🔄', completed: '📚', Romance: '❤️' };
             const localSt = getLocalViewStats();
             const localRevs = getLocalReviews();
 
@@ -2166,7 +2166,7 @@
             const posterTitle = document.getElementById('pfmPosterTitle');
             const posterIcon = document.getElementById('pfmPosterIcon');
 
-            const iconMap = { ongoing: '🎧', completed: '📚', adult: '🔞' };
+            const iconMap = { ongoing: '🎧', completed: '📚', Romance: '❤️' };
             if (posterTitle) posterTitle.innerText = cleanTitle;
             if (posterIcon) posterIcon.innerText = iconMap[status] || '🎧';
 
@@ -3349,7 +3349,7 @@
                 </a>
 
                 <a href="mailto:support@novelxplainer.com" style="color:#c4c4d4; text-decoration:none;">
-                   support ✉ sibaram2920@gmail.com
+                    ✉ support@novelxplainer.com
                 </a>
 
                 <span>📍 Odisha, India</span>
