@@ -58,8 +58,8 @@ ADMIN_ID = int(os.getenv("ADMIN_ID", 8307246037))
 ADMIN_PHONE = os.getenv("ADMIN_PHONE", "7735021399")
 CONTACT_URL = os.getenv("CONTACT_URL", "https://t.me/NovelXplainerGroup01/1761")
 PORT = int(os.environ.get("PORT", 5000))
-RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "rzp_test_Tvz05c50z6YDeE")
-RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "ta3lijrajTarRSeplvZ6gDko")
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "rzp_live_TxG7eNfaYfo2dv")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "X0AynKe7isrpUQMcheFfSh34")
 RAZORPAY_WEBHOOK_SECRET = os.getenv("RAZORPAY_WEBHOOK_SECRET", "")
 
 # --- TELETHON MTPROTO & WEBSITE CONFIGURATION ---
