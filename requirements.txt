@@ -1,0 +1,6 @@
+flask
+pymongo
+pytelegrambotapi
+telethon
+apscheduler
+requests
