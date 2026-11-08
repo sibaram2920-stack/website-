@@ -50,6 +50,8 @@ logging.getLogger('apscheduler').setLevel(logging.ERROR)
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 logging.getLogger('telethon').setLevel(logging.ERROR)
 logging.getLogger('urllib3').setLevel(logging.ERROR)
+logging.getLogger('TeleBot').setLevel(logging.CRITICAL)
+telebot.logger.setLevel(logging.CRITICAL)
 
 # --- CONFIGURATION ---
 BOT_TOKEN = os.getenv("BOT_TOKEN", "8626442584:AAHlcMntaXMjOj8ftG0tTPrNlAMR1cWrF9o")
@@ -76,8 +78,25 @@ NOVEL_GROUP_ID = int(os.getenv("NOVEL_GROUP_ID", "-1004431739408"))  # Group whe
 IST = timezone(timedelta(hours=5, minutes=30), "IST")
 
 # --- INITIALIZATION ---
-bot = telebot.TeleBot(BOT_TOKEN)
+INSTANCE_ID = f"{os.getpid()}_{int(time.time() * 1000)}_{random.randint(1000, 9999)}"
 client = MongoClient(MONGO_URI)
+
+
+class ConflictSafeExceptionHandler(telebot.ExceptionHandler):
+    def handle(self, exception):
+        err_str = str(exception)
+        if "409" in err_str or "Conflict" in err_str:
+            with suppress(Exception):
+                lock_doc = client["sub_management"]["config"].find_one({"_id": "bot_poller_lock"}) or {}
+                if lock_doc.get("instance_id") and lock_doc.get("instance_id") != INSTANCE_ID:
+                    bot.stop_polling()
+                    return True
+            time.sleep(4)
+            return True
+        return True
+
+
+bot = telebot.TeleBot(BOT_TOKEN, exception_handler=ConflictSafeExceptionHandler())
 db = client["sub_management"]
 
 collections = {
@@ -261,27 +280,38 @@ def get_topic_free_audio_limit(topic_id: int) -> int:
             return 10
     return 10
 
-def can_user_stream_audio(user_id: int, message_id: int) -> bool:
-    """Returns True if user is logged in AND (has active/approved subscription OR message_id is within the topic's free_audios limit)."""
+STREAM_AUTH_CACHE = {}
+
+def can_user_stream_audio(user_id: int, track_msg_id: int) -> bool:
+    """Returns True in 0ms from cache if user can stream the audio track."""
     if not user_id or int(user_id) <= 0:
         return False
-    if user_has_novel_access(user_id):
+    uid, mid = int(user_id), int(track_msg_id)
+    if uid == ADMIN_ID:
         return True
-    if collections["users"].find_one({"user_id": int(user_id), "status": "approved_pending_join"}):
-        return True
-    audio_doc = collections["novel_audios"].find_one({"message_id": int(message_id)})
-    if not audio_doc:
-        return False
-    t_id = audio_doc.get("topic_id")
-    if not t_id:
-        return False
-    free_limit = get_topic_free_audio_limit(int(t_id))
-    if free_limit <= 0:
-        return False
-    topic_audios = list(collections["novel_audios"].find({"topic_id": int(t_id)}, {"message_id": 1, "chapter_num": 1}))
-    topic_audios.sort(key=lambda x: (x.get("chapter_num", x["message_id"]), x["message_id"]))
-    free_ids = {int(a["message_id"]) for a in topic_audios[:free_limit]}
-    return int(message_id) in free_ids
+    now = time.time()
+    cached = STREAM_AUTH_CACHE.get((uid, mid))
+    if cached and cached[1] > now:
+        return cached[0]
+
+    allowed = False
+    if user_has_novel_access(uid):
+        allowed = True
+    elif collections["users"].find_one({"user_id": uid, "status": "approved_pending_join"}):
+        allowed = True
+    else:
+        audio_doc = collections["novel_audios"].find_one({"message_id": mid})
+        if audio_doc and audio_doc.get("topic_id"):
+            t_id = int(audio_doc["topic_id"])
+            free_limit = get_topic_free_audio_limit(t_id)
+            if free_limit > 0:
+                topic_audios = list(collections["novel_audios"].find({"topic_id": t_id}, {"message_id": 1, "chapter_num": 1}))
+                topic_audios.sort(key=lambda x: (x.get("chapter_num", x["message_id"]), x["message_id"]))
+                free_ids = {int(a["message_id"]) for a in topic_audios[:free_limit]}
+                allowed = mid in free_ids
+
+    STREAM_AUTH_CACHE[(uid, mid)] = (allowed, now + (120 if allowed else 15))
+    return allowed
 
 def get_active_tg_client() -> Optional[TelegramClient]:
     """Prefers the User MTProto client (which can read all old Oct 26-27 group messages), falls back to Bot client."""
@@ -620,8 +650,8 @@ async def _auto_preindex_unindexed_novels():
 def start_telethon_background() -> None:
     global tg_user_client, tg_bot_client
     asyncio.set_event_loop(telethon_loop)
-    tg_user_client = TelegramClient("user_mtproto_session", API_ID, API_HASH, loop=telethon_loop)
-    tg_bot_client = TelegramClient("bot_mtproto_session", API_ID, API_HASH, loop=telethon_loop)
+    tg_user_client = TelegramClient("user_mtproto_session", API_ID, API_HASH, loop=telethon_loop, receive_updates=False)
+    tg_bot_client = TelegramClient("bot_mtproto_session", API_ID, API_HASH, loop=telethon_loop, receive_updates=False)
 
     async def _init():
         await tg_user_client.connect()
@@ -1699,85 +1729,57 @@ def api_topic_audios(topic_id: int):
         "narrator": novel_doc.get("narrator", "")
     })
 
-async def _background_ram_preload(message_id: int, msg, file_size: int, mime_type: str):
-    """Pre-loads the audio into temporary server RAM cache in the background (never written to disk)."""
-    entry = AUDIO_RAM_CACHE.get(message_id)
-    if not entry or entry.get("complete") or entry.get("downloading"):
-        return
-    entry["downloading"] = True
-    active_client = get_active_tg_client()
-    try:
-        async for chunk in active_client.iter_download(msg.media, offset=0, request_size=524288):
-            if entry.get("abort"):
-                break
-            entry["data"].extend(chunk)
-            entry["downloaded"] = len(entry["data"])
-            entry["last_access"] = time.time()
-        if file_size and len(entry["data"]) >= file_size:
-            entry["complete"] = True
-    except Exception:
-        pass
-    finally:
-        entry["downloading"] = False
+STREAM_BLOCK_SIZE = 131072  # 128 KB aligned blocks (divides 1 MB evenly for ultra-fast MTProto seeking)
 
-def _get_or_create_ram_cache_entry(message_id: int, msg, file_size: int, mime_type: str) -> dict:
+def _get_or_create_ram_cache_entry(track_msg_id: int, msg, file_size: int, mime_type: str) -> dict:
     now = time.time()
-    if message_id in AUDIO_RAM_CACHE:
-        AUDIO_RAM_CACHE[message_id]["last_access"] = now
-        return AUDIO_RAM_CACHE[message_id]
+    if track_msg_id in AUDIO_RAM_CACHE:
+        AUDIO_RAM_CACHE[track_msg_id]["last_access"] = now
+        return AUDIO_RAM_CACHE[track_msg_id]
 
     while len(AUDIO_RAM_CACHE) >= MAX_RAM_CACHE_TRACKS:
         oldest_id = min(AUDIO_RAM_CACHE.keys(), key=lambda k: AUDIO_RAM_CACHE[k]["last_access"])
-        old_entry = AUDIO_RAM_CACHE.pop(oldest_id, None)
-        if old_entry:
-            old_entry["abort"] = True
+        AUDIO_RAM_CACHE.pop(oldest_id, None)
 
     entry = {
-        "data": bytearray(),
-        "downloaded": 0,
+        "blocks": {},
         "file_size": file_size or 0,
         "mime_type": mime_type,
-        "complete": False,
-        "downloading": False,
-        "abort": False,
         "last_access": now
     }
-    AUDIO_RAM_CACHE[message_id] = entry
-    asyncio.run_coroutine_threadsafe(
-        _background_ram_preload(message_id, msg, file_size, mime_type),
-        telethon_loop
-    )
+    AUDIO_RAM_CACHE[track_msg_id] = entry
     return entry
 
-@app.route("/stream/<int:user_id>/<int:message_id>", methods=["GET", "HEAD", "OPTIONS"])
-def stream_large_audio(user_id: int, message_id: int):
+@app.route("/stream/<int:user_id>/<int:track_msg_id>", methods=["GET", "HEAD", "OPTIONS"])
+def stream_large_audio(user_id: int, track_msg_id: int):
     if request.method == "OPTIONS":
         return Response(status=200)
     """
-    High-speed instant-seeking audio stream with temporary RAM pre-caching.
-    Never saves files to disk; serves cached byte ranges in 0ms for instant +3m / -1m seeking.
+    Ultra-high-speed instant-seeking audio stream with 128 KB Block RAM Cache.
+    Zero background download contention: 100% of MTProto bandwidth goes to the exact seek position.
     """
-    if not can_user_stream_audio(user_id, message_id):
+    if not can_user_stream_audio(user_id, track_msg_id):
         return "Unauthorized: Subscription required.", 403
     active_client = get_active_tg_client()
     if not active_client:
         return "Telethon client initializing.", 503
 
-    async def _get_msg():
-        if message_id in MSG_CACHE and getattr(MSG_CACHE[message_id], "media", None):
-            return MSG_CACHE[message_id]
-        if not active_client.is_connected():
-            await active_client.connect()
-        entity = await _resolve_group_entity(active_client)
-        m = await active_client.get_messages(entity, ids=message_id)
-        if m and getattr(m, "media", None):
-            MSG_CACHE[message_id] = m
-        return m
+    # Fast synchronous lookup in MSG_CACHE (0ms latency on seek)
+    msg = MSG_CACHE.get(track_msg_id)
+    if not msg or not getattr(msg, "media", None):
+        async def _get_msg():
+            if not active_client.is_connected():
+                await active_client.connect()
+            entity = await _resolve_group_entity(active_client)
+            m = await active_client.get_messages(entity, ids=track_msg_id)
+            if m and getattr(m, "media", None):
+                MSG_CACHE[track_msg_id] = m
+            return m
 
-    try:
-        msg = asyncio.run_coroutine_threadsafe(_get_msg(), telethon_loop).result(timeout=15)
-    except Exception as e:
-        return f"Error fetching audio message: {e}", 500
+        try:
+            msg = asyncio.run_coroutine_threadsafe(_get_msg(), telethon_loop).result(timeout=15)
+        except Exception as e:
+            return f"Error fetching audio track: {e}", 500
 
     if not msg or not getattr(msg, "media", None):
         return "Audio media not found.", 404
@@ -1805,14 +1807,19 @@ def stream_large_audio(user_id: int, message_id: int):
             status_code = 206
 
     length = (end - offset + 1) if (file_size and end is not None) else None
+    is_small_prewarm = bool(length is not None and length <= (STREAM_BLOCK_SIZE * 2) and offset == 0)
 
-    # Cancel ALL previous active streams for this user (including on the same message_id when seeking!)
-    prev_streams = ACTIVE_USER_STREAMS.pop(user_id, [])
-    for _, old_stop, old_fut in prev_streams:
-        old_stop.set()
-        old_fut.cancel()
+    # Cancel previous active streams for this user ONLY when starting/seeking a main playback stream
+    if not is_small_prewarm:
+        prev_streams = ACTIVE_USER_STREAMS.pop(user_id, [])
+        for _, old_stop, old_fut, old_q in prev_streams:
+            old_stop.set()
+            with suppress(Exception):
+                old_q.put_nowait(None)
+            old_fut.cancel()
 
-    ram_entry = _get_or_create_ram_cache_entry(message_id, msg, file_size, mime_type)
+    ram_entry = _get_or_create_ram_cache_entry(track_msg_id, msg, file_size, mime_type)
+    blocks_map = ram_entry["blocks"]
 
     headers = {
         "Accept-Ranges": "bytes",
@@ -1829,81 +1836,98 @@ def stream_large_audio(user_id: int, message_id: int):
     if request.method == "HEAD":
         return Response(status=status_code, headers=headers)
 
-    # Fast path 1: Requested byte range is already in temporary RAM cache -> serve immediately in 0ms!
-    if ram_entry["complete"] or (end is not None and ram_entry["downloaded"] > end):
-        cached_slice = bytes(ram_entry["data"][offset:end + 1])
-        return Response(cached_slice, status=status_code, headers=headers)
-
-    CHUNK_SIZE = 262144  # 256 KB aligned chunks (divides 1 MB evenly for fast MTProto seek)
-    aligned_offset = (offset // CHUNK_SIZE) * CHUNK_SIZE
-    skip_bytes = offset - aligned_offset
-
     def generate():
-        nonlocal aligned_offset, skip_bytes
-        if offset <= ram_entry["downloaded"] + CHUNK_SIZE and ram_entry.get("downloading"):
-            pos = offset
-            target_end = (end + 1) if end is not None else file_size
-            waited = 0.0
-            while target_end is None or pos < target_end:
-                avail = ram_entry["downloaded"]
-                if avail > pos:
-                    step_end = min(avail, pos + CHUNK_SIZE, target_end or avail)
-                    yield bytes(ram_entry["data"][pos:step_end])
-                    pos = step_end
-                    waited = 0.0
-                elif ram_entry["complete"] or not ram_entry.get("downloading") or waited > 1.5:
-                    break
-                else:
-                    time.sleep(0.03)
-                    waited += 0.03
-            if target_end is not None and pos >= target_end:
-                return
-            aligned_offset = (pos // CHUNK_SIZE) * CHUNK_SIZE
-            skip_bytes = pos - aligned_offset
+        cur_pos = offset
+        target_end = (end + 1) if end is not None else file_size
 
-        q = queue.Queue(maxsize=24)
+        # 1. Serve any consecutive 128 KB blocks already cached in RAM in 0ms
+        while target_end is None or cur_pos < target_end:
+            blk_idx = cur_pos // STREAM_BLOCK_SIZE
+            blk_data = blocks_map.get(blk_idx)
+            if blk_data is None:
+                break
+            blk_offset = cur_pos - (blk_idx * STREAM_BLOCK_SIZE)
+            slice_data = blk_data[blk_offset:]
+            if target_end is not None and cur_pos + len(slice_data) > target_end:
+                slice_data = slice_data[:target_end - cur_pos]
+            if not slice_data:
+                break
+            yield slice_data
+            cur_pos += len(slice_data)
+
+        if target_end is not None and cur_pos >= target_end:
+            return
+
+        # 2. Stream directly from the aligned 128 KB seek block via Telethon MTProto
+        aligned_offset = (cur_pos // STREAM_BLOCK_SIZE) * STREAM_BLOCK_SIZE
+        skip_bytes = cur_pos - aligned_offset
+        rem_length = (target_end - cur_pos) if target_end is not None else None
+
+        q = queue.Queue(maxsize=32)
         stop_event = Event()
 
         async def _producer():
             try:
                 bytes_sent = 0
+                cur_blk_idx = aligned_offset // STREAM_BLOCK_SIZE
                 first_chunk = True
-                async for chunk in active_client.iter_download(
+                async for raw_chunk in active_client.iter_download(
                     msg.media,
                     offset=aligned_offset,
-                    request_size=CHUNK_SIZE
+                    request_size=STREAM_BLOCK_SIZE
                 ):
                     if stop_event.is_set():
                         break
+                    if not raw_chunk:
+                        break
+                    # Cache aligned 128 KB block in RAM for instant backward/forward re-seeks
+                    if len(blocks_map) < 240:
+                        blocks_map[cur_blk_idx] = bytes(raw_chunk)
+                    cur_blk_idx += 1
+
+                    out_chunk = raw_chunk
                     if first_chunk and skip_bytes > 0:
-                        chunk = chunk[skip_bytes:]
+                        out_chunk = out_chunk[skip_bytes:]
                         first_chunk = False
                     else:
                         first_chunk = False
-                    if not chunk:
+
+                    if not out_chunk:
                         continue
-                    if length is not None and bytes_sent + len(chunk) > length:
-                        chunk = chunk[:length - bytes_sent]
+                    if rem_length is not None and bytes_sent + len(out_chunk) > rem_length:
+                        out_chunk = out_chunk[:rem_length - bytes_sent]
+
                     while not stop_event.is_set():
                         try:
-                            q.put(chunk, timeout=0.1)
+                            q.put(out_chunk, timeout=0.1)
                             break
                         except queue.Full:
-                            await asyncio.sleep(0.03)
-                    bytes_sent += len(chunk)
-                    if length is not None and bytes_sent >= length:
+                            await asyncio.sleep(0.02)
+
+                    bytes_sent += len(out_chunk)
+                    if rem_length is not None and bytes_sent >= rem_length:
                         break
             except Exception:
                 pass
             finally:
                 with suppress(Exception):
-                    q.put(None, timeout=0.5)
+                    q.put_nowait(None)
 
         fut = asyncio.run_coroutine_threadsafe(_producer(), telethon_loop)
-        ACTIVE_USER_STREAMS.setdefault(user_id, []).append((message_id, stop_event, fut))
+        if not is_small_prewarm:
+            ACTIVE_USER_STREAMS.setdefault(user_id, []).append((track_msg_id, stop_event, fut, q))
+
+        idle_seconds = 0.0
         try:
-            while True:
-                chunk = q.get(timeout=45)
+            while not stop_event.is_set():
+                try:
+                    chunk = q.get(timeout=1.0)
+                    idle_seconds = 0.0
+                except queue.Empty:
+                    idle_seconds += 1.0
+                    if stop_event.is_set() or fut.done() or idle_seconds >= 25.0:
+                        break
+                    continue
                 if chunk is None:
                     break
                 yield chunk
@@ -4824,6 +4848,14 @@ if __name__ == "__main__":
     scheduler.add_job(cleanup_expired_clicks, "interval", hours=1, max_instances=1, coalesce=True)
     scheduler.start()
 
-    bot.remove_webhook()
+    with suppress(Exception):
+        collections["config"].update_one(
+            {"_id": "bot_poller_lock"},
+            {"$set": {"instance_id": INSTANCE_ID, "started_at": time.time()}},
+            upsert=True
+        )
+    time.sleep(1.5)
+    with suppress(Exception):
+        bot.remove_webhook()
     logger.info("Bot is running...")
-    bot.infinity_polling(timeout=20, long_polling_timeout=10, allowed_updates=telebot.util.update_types)
+    bot.infinity_polling(timeout=20, long_polling_timeout=10, allowed_updates=telebot.util.update_types, logger_level=logging.CRITICAL)
