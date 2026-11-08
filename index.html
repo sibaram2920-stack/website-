@@ -73,7 +73,7 @@
         .tag { font-family: var(--font-main); font-size: 10.5px; padding: 3px 9px; border-radius: 999px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
         .tag.ongoing { background: rgba(255, 45, 85, 0.15); color: #ff5c7c; border: 1px solid rgba(255, 45, 85, 0.25); }
         .tag.completed { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.25); }
-        .tag.Romance { background: rgba(244, 63, 94, 0.18); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+        .tag.adult { background: rgba(244, 63, 94, 0.18); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
         .btn-primary { background: var(--accent-gradient); color: #ffffff; border: none; padding: 8px 16px; border-radius: 999px; font-family: var(--font-main); font-weight: 700; font-size: 12px; letter-spacing: 0.01em; cursor: pointer; box-shadow: 0 4px 14px var(--accent-glow); transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease; }
         .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 45, 85, 0.45); opacity: 0.96; }
         .btn-warning { background: linear-gradient(135deg, #ffb800 0%, #ff8a00 100%); color: #09090f; border: none; padding: 9px 16px; border-radius: 999px; font-family: var(--font-main); font-weight: 800; font-size: 12.5px; cursor: pointer; box-shadow: 0 4px 14px rgba(255, 184, 0, 0.28); transition: transform 0.18s ease, opacity 0.18s ease; }
@@ -257,6 +257,34 @@
             .phone-input-row { flex-direction: column; }
             .country-select { width: 100%; }
         }
+
+        /* Profile Modal (Image, First Name, Second Name, Below Logout Button) */
+        .profile-card-box { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 10px 6px 4px; }
+        .profile-avatar-wrap { width: 88px; height: 88px; border-radius: 50%; padding: 3px; background: var(--accent-gradient); box-shadow: 0 8px 24px var(--accent-glow); margin-bottom: 14px; position: relative; cursor: pointer; }
+        .profile-avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: var(--bg-main); display: none; }
+        .profile-avatar-fallback { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-card); color: #ffffff; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 30px; font-weight: 800; }
+        .profile-avatar-edit-badge { position: absolute; bottom: 0; right: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--bg-secondary); border: 1.5px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; }
+        .profile-names-grid { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; text-align: left; }
+        .profile-name-box { background: var(--bg-main); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; }
+        .profile-name-label { font-size: 10.5px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; display: block; }
+        .profile-name-input { width: 100%; background: transparent; border: none; color: var(--text-primary); font-family: var(--font-display); font-size: 14.5px; font-weight: 700; outline: none; }
+        .profile-logout-btn { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(244, 63, 94, 0.45); background: rgba(244, 63, 94, 0.14); color: #fb7185; font-family: var(--font-main); font-size: 13.5px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; margin-top: 4px; }
+        .profile-logout-btn:hover { background: rgba(244, 63, 94, 0.24); border-color: var(--danger); color: #ffffff; }
+
+        /* Mobile-Only Bottom Logo Bar (Hidden on Laptop & Desktop; Shown ONLY on Mobile) */
+        .mobile-bottom-nav { display: none !important; }
+        @media (max-width: 680px) {
+            body { padding-bottom: 150px; }
+            .player-dock { bottom: calc(64px + env(safe-area-inset-bottom, 0px)); width: min(350px, 94vw); }
+            #subBadge, #navLoginBtn { display: none !important; }
+            .mobile-bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; height: calc(58px + env(safe-area-inset-bottom, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); background: rgba(7, 7, 11, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.09); display: flex !important; align-items: center; justify-content: space-around; z-index: 95; box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.65); }
+            .mob-nav-item { background: transparent; border: none; color: #9ca3af; display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 14px; cursor: pointer; position: relative; transition: color 0.18s ease, transform 0.18s ease, background 0.18s ease; padding: 0; }
+            .mob-nav-item:hover, .mob-nav-item.active { color: #ffffff; background: rgba(255, 255, 255, 0.06); }
+            .mob-nav-item svg { width: 23px; height: 23px; pointer-events: none; }
+            .mob-nav-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--accent); display: none; }
+            .mob-sub-dot { position: absolute; top: 9px; right: 9px; width: 8px; height: 8px; border-radius: 50%; background: var(--success); border: 1.5px solid #07070b; }
+            .mob-sub-dot.expired { background: var(--danger); }
+        }
     </style>
 </head>
 <body>
@@ -301,8 +329,8 @@
                     <button class="tab active" onclick="selectCategory('all', this)">All Novels</button>
                     <button class="tab" onclick="selectCategory('ongoing', this)">🔄 Ongoing</button>
                     <button class="tab" onclick="selectCategory('completed', this)">📚 Completed</button>
-                    <button class="tab" onclick="selectCategory('Romance', this)">❤️ Romance</button>
-                    <button class="tab" id="subTabBtn" onclick="openSubscriptionTab(this)">💳 Subscription</button>
+                    <button class="tab" onclick="selectCategory('adult', this)">🔞 Adult</button>
+                    <button class="tab" id="subTabBtn" style="display:none;" onclick="openSubscriptionTab(this)">💳 Subscription</button>
                     <button class="tab" onclick="openReviewModal(true)">⭐ User Reviews</button>
                 </div>
             </div>
@@ -379,7 +407,7 @@
                         <!-- Pocket FM Views, Rating & Status Bar (Revealed below title / on scroll like Video 2) -->
                         <div class="pfm-stats-bar">
                             <span id="pfmTotalPlaysBadge" class="pfm-plays-counter" style="display:none;">🎧 0 PLAYS</span>
-                            <span id="pfmTotalViewsBadge" class="pfm-views-counter">👁️ 0 VIEWS</span>
+                            <span id="pfmTotalViewsBadge" class="pfm-views-counter">0 VIEWS</span>
                             <span style="color:var(--text-secondary);">•</span>
                             <span id="pfmStarBadge" class="pfm-star-pill" onclick="switchPfmShowTab('reviews')" title="Click to view reviews for this novel"><span style="color:var(--warning);">★</span> 5.0 (0)</span>
                             <span style="color:var(--text-secondary);">•</span>
@@ -904,6 +932,63 @@
         </div>
     </div>
 
+    <!-- User Profile Modal (First Name, Second Name, Profile Image & Logout Button Below) -->
+    <div id="profileModal" class="modal-backdrop">
+        <div class="modal" style="max-width: 390px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <h3 style="margin-bottom:0; font-size:18px;">👤 My Profile</h3>
+                <button type="button" class="modal-close-cross" onclick="closeProfileModal()" title="Close">✕</button>
+            </div>
+            <div class="profile-card-box">
+                <input type="file" id="profileImageFileInput" accept="image/*" style="display:none;" onchange="handleProfileImageUpload(event)">
+                <div class="profile-avatar-wrap" onclick="document.getElementById('profileImageFileInput').click()" title="Click to change profile photo">
+                    <img id="profileModalImg" class="profile-avatar-img" src="" alt="User Avatar" onerror="this.style.display='none'; document.getElementById('profileModalFallback').style.display='flex';">
+                    <div id="profileModalFallback" class="profile-avatar-fallback">👤</div>
+                    <div class="profile-avatar-edit-badge">📷</div>
+                </div>
+
+                <div class="profile-names-grid">
+                    <div class="profile-name-box">
+                        <span class="profile-name-label">First Name</span>
+                        <input type="text" id="profileFirstNameInput" class="profile-name-input" placeholder="First Name" oninput="saveCustomProfileNames()">
+                    </div>
+                    <div class="profile-name-box">
+                        <span class="profile-name-label">Second Name</span>
+                        <input type="text" id="profileSecondNameInput" class="profile-name-input" placeholder="Second Name" oninput="saveCustomProfileNames()">
+                    </div>
+                </div>
+
+                <div id="profileSubSummary" style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;"></div>
+
+                <button type="button" id="profileLogoutBtn" class="profile-logout-btn" onclick="closeProfileModal(); logoutWebsiteUser();">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile-Only Bottom Logo Bar (Shown ONLY on Mobile; Laptop & Desktop stays normal and does NOT show this bar) -->
+    <nav id="mobileBottomNav" class="mobile-bottom-nav" aria-label="Mobile Navigation">
+        <button type="button" class="mob-nav-item active" id="mobNavHomeBtn" onclick="closeEpisodesView(); setMobileNavActive('home');" title="Home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"></path></svg>
+        </button>
+        <button type="button" class="mob-nav-item" id="mobNavReviewsBtn" onclick="setMobileNavActive('reviews'); openReviewModal(true);" title="Reviews">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </button>
+        <button type="button" class="mob-nav-item" id="mobNavSubBtn" onclick="setMobileNavActive('sub'); openSubscriptionModal();" title="Subscription">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+            <span id="mobSubDot" class="mob-sub-dot expired"></span>
+        </button>
+        <button type="button" class="mob-nav-item" id="mobNavLoginBtn" onclick="setMobileNavActive('login'); openLoginModal();" title="Login">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+        </button>
+        <button type="button" class="mob-nav-item" id="mobNavProfileBtn" onclick="setMobileNavActive('profile'); openProfileModal();" title="Profile">
+            <img id="mobProfileImg" class="mob-nav-avatar" src="" alt="Profile" onerror="this.style.display='none'; document.getElementById('mobProfileSvg').style.display='block';">
+            <svg id="mobProfileSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </button>
+    </nav>
+
     <script>
         if (window.Telegram && window.Telegram.WebApp) {
             window.Telegram.WebApp.ready();
@@ -986,7 +1071,6 @@
                 }
                 checkUserStatus().then(() => {
                     renderNovels();
-                    openReviewModal();
                 });
                 return;
             }
@@ -1055,6 +1139,122 @@
             } else {
                 navBtn.innerHTML = `👤 <span id="displayUserId">${realName}</span> ⚙️`;
             }
+            syncProfileAvatarAndNames();
+        }
+
+        function setMobileNavActive(tabKey) {
+            const map = {
+                home: 'mobNavHomeBtn',
+                reviews: 'mobNavReviewsBtn',
+                sub: 'mobNavSubBtn',
+                login: 'mobNavLoginBtn',
+                profile: 'mobNavProfileBtn'
+            };
+            Object.keys(map).forEach(k => {
+                const el = document.getElementById(map[k]);
+                if (el) el.classList.toggle('active', k === tabKey);
+            });
+        }
+
+        function getSplitUserNames() {
+            const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user || {};
+            const savedFirst = localStorage.getItem('nx_first_name') || '';
+            const savedSecond = localStorage.getItem('nx_second_name') || '';
+            const fullRaw = String(currentAccountName || '').trim();
+            const parts = fullRaw && fullRaw !== 'User' ? fullRaw.split(/\s+/) : [];
+            const firstName = savedFirst || tgUser.first_name || parts[0] || (isUserLoggedIn ? 'Audio' : 'Guest');
+            const secondName = savedSecond || tgUser.last_name || (parts.length > 1 ? parts.slice(1).join(' ') : (isUserLoggedIn ? 'Listener' : 'User'));
+            return { firstName, secondName };
+        }
+
+        function getUserProfilePhotoUrl() {
+            const customImg = localStorage.getItem('nx_profile_photo') || '';
+            if (customImg) return customImg;
+            const tgPhoto = window.Telegram?.WebApp?.initDataUnsafe?.user?.photo_url || '';
+            if (tgPhoto) return tgPhoto;
+            return '';
+        }
+
+        function syncProfileAvatarAndNames() {
+            const { firstName, secondName } = getSplitUserNames();
+            const photoUrl = getUserProfilePhotoUrl();
+            const initials = ((firstName.charAt(0) || '') + (secondName.charAt(0) || '')).toUpperCase() || '👤';
+
+            const mobImg = document.getElementById('mobProfileImg');
+            const mobSvg = document.getElementById('mobProfileSvg');
+            const modalImg = document.getElementById('profileModalImg');
+            const modalFallback = document.getElementById('profileModalFallback');
+            const mobDot = document.getElementById('mobSubDot');
+
+            if (mobDot) {
+                mobDot.classList.toggle('expired', !(isUserLoggedIn && userHasActiveSub));
+            }
+
+            if (modalFallback) modalFallback.innerText = isUserLoggedIn ? initials : '👤';
+
+            if (photoUrl) {
+                if (mobImg) { mobImg.src = photoUrl; mobImg.style.display = 'block'; }
+                if (mobSvg) mobSvg.style.display = 'none';
+                if (modalImg) { modalImg.src = photoUrl; modalImg.style.display = 'block'; }
+                if (modalFallback) modalFallback.style.display = 'none';
+            } else {
+                if (mobImg) mobImg.style.display = 'none';
+                if (mobSvg) mobSvg.style.display = 'block';
+                if (modalImg) modalImg.style.display = 'none';
+                if (modalFallback) modalFallback.style.display = 'flex';
+            }
+
+            const fInp = document.getElementById('profileFirstNameInput');
+            const sInp = document.getElementById('profileSecondNameInput');
+            if (fInp && document.activeElement !== fInp) fInp.value = firstName;
+            if (sInp && document.activeElement !== sInp) sInp.value = secondName;
+        }
+
+        function saveCustomProfileNames() {
+            const fVal = (document.getElementById('profileFirstNameInput')?.value || '').trim();
+            const sVal = (document.getElementById('profileSecondNameInput')?.value || '').trim();
+            localStorage.setItem('nx_first_name', fVal);
+            localStorage.setItem('nx_second_name', sVal);
+            const combined = [fVal, sVal].filter(Boolean).join(' ');
+            if (combined) {
+                currentAccountName = combined;
+                localStorage.setItem('nx_account_name', combined);
+            }
+            syncProfileAvatarAndNames();
+        }
+
+        function handleProfileImageUpload(ev) {
+            const file = ev?.target?.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target?.result;
+                if (dataUrl) {
+                    try {
+                        localStorage.setItem('nx_profile_photo', String(dataUrl));
+                    } catch (err) {}
+                    syncProfileAvatarAndNames();
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openProfileModal() {
+            syncProfileAvatarAndNames();
+            const subSum = document.getElementById('profileSubSummary');
+            if (subSum) {
+                if (!isUserLoggedIn || Number(currentUserId) <= 0) {
+                    subSum.innerText = 'Not logged in • Tap Login icon to connect Telegram';
+                } else {
+                    subSum.innerText = `${currentUserPhone ? '📱 ' + currentUserPhone + ' • ' : ''}${userHasActiveSub ? '✅ Active Subscription' : '🔒 Free Preview Mode'}`;
+                }
+            }
+            document.getElementById('profileModal').style.display = 'flex';
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profileModal');
+            if (modal) modal.style.display = 'none';
         }
 
         function clearChapterSearch() {
@@ -1232,6 +1432,9 @@
             localStorage.removeItem('nx_user_id');
             localStorage.removeItem('nx_user_phone');
             localStorage.removeItem('nx_account_name');
+            localStorage.removeItem('nx_first_name');
+            localStorage.removeItem('nx_second_name');
+            localStorage.removeItem('nx_profile_photo');
             const pInp = document.getElementById('loginPhoneInput');
             const uInp = document.getElementById('loginUserIdInput');
             const mInp = document.getElementById('modalUserId');
@@ -1445,9 +1648,7 @@
                 updateHeaderDisplay();
                 checkTgSessionStatus();
 
-                if (data.pending_feedback) {
-                    openReviewModal();
-                }
+                // Subscription-end review popup disabled (per-novel reviews remain active)
 
                 if (data.has_access) {
                     userDaysLeft = (data.days_left !== undefined && data.days_left !== null) ? data.days_left : null;
@@ -1934,7 +2135,7 @@
                 return;
             }
 
-            const iconMap = { ongoing: '🔄', completed: '📚', Romance: '❤️' };
+            const iconMap = { ongoing: '🔄', completed: '📚', adult: '🔞' };
             const localSt = getLocalViewStats();
             const localRevs = getLocalReviews();
 
@@ -1976,7 +2177,7 @@
                             <span style="color:var(--warning); font-weight:700;">★ ${ratingVal}${revCount > 0 ? ' (' + revCount + ')' : ''}</span>
                         </div>
                         <div style="display:flex; align-items:center; justify-content:space-between; font-size:11.5px; color:var(--text-secondary); padding-top:6px; border-top:1px solid rgba(255,255,255,0.06);">
-                            <span id="card-views-${n.topic_id}">👁️ ${formatCompactCount(viewsCount)} Views</span>
+                            <span id="card-views-${n.topic_id}"> ${formatCompactCount(viewsCount)} Views</span>
                         </div>
                     </div>
                 </div>`;
@@ -2166,7 +2367,7 @@
             const posterTitle = document.getElementById('pfmPosterTitle');
             const posterIcon = document.getElementById('pfmPosterIcon');
 
-            const iconMap = { ongoing: '🎧', completed: '📚', Romance: '❤️' };
+            const iconMap = { ongoing: '🎧', completed: '📚', adult: '🔞' };
             if (posterTitle) posterTitle.innerText = cleanTitle;
             if (posterIcon) posterIcon.innerText = iconMap[status] || '🎧';
 
@@ -2197,7 +2398,7 @@
             const viewsBadge = document.getElementById('pfmTotalViewsBadge');
             const seriesBadge = document.getElementById('pfmSeriesBadge');
             if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(playsVal)} PLAYS`;
-            if (viewsBadge) viewsBadge.innerText = `👁️ ${formatCompactCount(viewsVal)} VIEWS`;
+            if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(viewsVal)} VIEWS`;
             if (seriesBadge) seriesBadge.innerText = status.toUpperCase();
 
             const localMeta = getLocalCustomMeta(topicId);
@@ -2274,7 +2475,7 @@
             }
             const viewsBadge = document.getElementById('pfmTotalViewsBadge');
             const playsBadge = document.getElementById('pfmTotalPlaysBadge');
-            if (viewsBadge) viewsBadge.innerText = `👁️ ${formatCompactCount(curV)} VIEWS`;
+            if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(curV)} VIEWS`;
             if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(curP)} PLAYS`;
 
             try {
@@ -2294,7 +2495,7 @@
                         found.views = srvV;
                         found.plays = srvP;
                     }
-                    if (viewsBadge) viewsBadge.innerText = `👁️ ${formatCompactCount(srvV)} VIEWS`;
+                    if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(srvV)} VIEWS`;
                     if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(srvP)} PLAYS`;
                 }
             } catch (e) {}
@@ -2324,11 +2525,11 @@
             }
 
             const epBadge = document.getElementById(`ep-views-${messageId}`);
-            if (epBadge) epBadge.innerHTML = `👁️ ${formatCompactCount(curEpV)} Views`;
+            if (epBadge) epBadge.innerHTML = ` ${formatCompactCount(curEpV)} Views`;
 
             const viewsBadge = document.getElementById('pfmTotalViewsBadge');
             const playsBadge = document.getElementById('pfmTotalPlaysBadge');
-            if (viewsBadge) viewsBadge.innerText = `👁️ ${formatCompactCount(curNovV)} VIEWS`;
+            if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(curNovV)} VIEWS`;
             if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(st.plays[tidKey])} PLAYS`;
 
             try {
@@ -2355,8 +2556,8 @@
                         found.views = srvV;
                         found.plays = srvP;
                     }
-                    if (epBadge) epBadge.innerHTML = `👁️ ${formatCompactCount(srvA)} Views`;
-                    if (viewsBadge) viewsBadge.innerText = `👁️ ${formatCompactCount(srvV)} VIEWS`;
+                    if (epBadge) epBadge.innerHTML = ` ${formatCompactCount(srvA)} Views`;
+                    if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(srvV)} VIEWS`;
                     if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(srvP)} PLAYS`;
                 }
             } catch (e) {}
@@ -2495,7 +2696,7 @@
                     <div class="ep-left">
                         <div class="ep-meta">
                             <div class="ep-title">${pfmTitle}</div>
-                            <div class="ep-sub">${durClock}<span id="ep-views-${ep.message_id}">👁️ ${formatCompactCount(epViews)} Views</span> ${statusInlineHtml}</div>
+                            <div class="ep-sub">${durClock}<span id="ep-views-${ep.message_id}"> ${formatCompactCount(epViews)} Views</span> ${statusInlineHtml}</div>
                         </div>
                     </div>
                     <button type="button" class="pfm-circle-play" title="${isLocked ? 'Unlock Episode' : 'Play Episode'}">${circleIcon}</button>
@@ -3318,65 +3519,79 @@
         setInterval(pollAdminAndDataSync, 7000);
     </script>
 </body>
+<footer style="background:linear-gradient(135deg,#0b0b14,#151525); color:#a1a1b5; padding:55px 20px 25px; margin-top:50px; border-top:1px solid rgba(255,255,255,0.08); font-family:'Inter',system-ui,-apple-system,sans-serif; position:relative; overflow:hidden;">
+    
+    <!-- Subtle Ambient Glow Effects -->
+    <div style="position:absolute; top:-50px; left:50%; transform:translateX(-50%); width:300px; height:100px; background:radial-gradient(ellipse at center, rgba(255,45,85,0.08) 0%, rgba(0,0,0,0) 70%); pointer-events:none;"></div>
 
-<footer style="background:linear-gradient(135deg,#0b0b14,#151525); color:#a1a1b5; padding:45px 20px 20px; margin-top:50px; border-top:1px solid rgba(255,255,255,0.08); font-family:Arial,sans-serif;">
-
-    <div style="max-width:1100px; margin:auto;">
+    <div style="max-width:1100px; margin:auto; position:relative; z-index:1;">
 
         <!-- Brand -->
-        <div style="text-align:center; margin-bottom:30px;">
-            <h2 style="color:#ffffff; font-size:23px; font-weight:800; margin:0 0 10px; letter-spacing:0.5px;">
-                Novel<span style="color:#ff2d55;">Xplainer</span>
+        <div style="text-align:center; margin-bottom:35px;">
+            <h2 style="color:#ffffff; font-size:24px; font-weight:800; margin:0 0 10px; letter-spacing:0.5px; display:inline-block;">
+                Novel<span style="color:#ff2d55; transition:transform 0.3s ease;">Xplainer</span>
             </h2>
-            <p style="font-size:13px; line-height:1.7; max-width:550px; margin:auto; color:#9ca3af;">
+            <p style="font-size:13px; line-height:1.7; max-width:550px; margin:auto; color:#9ca3af; font-weight:400;">
                 NovelXplainer Digital Web Services provides digital content and web-based services with a simple, secure and user-friendly experience.
             </p>
         </div>
 
         <!-- Divider -->
-        <div style="height:1px; background:rgba(255,255,255,0.1); margin:25px 0;"></div>
+        <div style="height:1px; background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.12), rgba(255,255,255,0)); margin:30px 0;"></div>
 
-        <!-- Contact Information -->
-        <div style="text-align:center; margin-bottom:25px;">
-            <h3 style="color:#fff; font-size:15px; margin-bottom:15px;">
+        <!-- Contact & Social Information -->
+        <div style="text-align:center; margin-bottom:30px;">
+            <h3 style="color:#fff; font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:18px; opacity:0.9;">
                 Contact & Support
             </h3>
 
-            <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:12px 25px; font-size:13px;">
+            <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:14px 30px; font-size:13px;">
 
-                <a href="tel:+917735021399" style="color:#c4c4d4; text-decoration:none;">
-                    📞 +91 7735021399
+                <a href="tel:+917735021399" style="color:#c4c4d4; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:color 0.2s ease, transform 0.2s ease;" onmouseover="this.style.color='#ff2d55'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c4c4d4'; this.style.transform='translateY(0)';">
+                    <span style="font-size:15px;">📞</span> +91 7735021399
                 </a>
 
-                <a href="mailto:support@novelxplainer.com" style="color:#c4c4d4; text-decoration:none;">
-                    ✉ support@novelxplainer.com
+                <a href="mailto:support@novelxplainer.com" style="color:#c4c4d4; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:color 0.2s ease, transform 0.2s ease;" onmouseover="this.style.color='#ff2d55'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c4c4d4'; this.style.transform='translateY(0)';">
+                    <span style="font-size:15px;">✉</span> support@novelxplainer.com
                 </a>
 
-                <span>📍 Odisha, India</span>
+                <!-- Telegram Bot Link -->
+                <a href="https://t.me/NV_AUDIOBOOKBOT" target="_blank" rel="noopener noreferrer" style="color:#c4c4d4; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:color 0.2s ease, transform 0.2s ease;" onmouseover="this.style.color='#0088cc'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c4c4d4'; this.style.transform='translateY(0)';">
+                    <span style="font-size:15px;">🤖</span> Telegram Bot (@NV_AUDIOBOOKBOT)
+                </a>
+
+                <!-- Telegram Channel Link -->
+                <a href="https://t.me/NovelXplainer01" target="_blank" rel="noopener noreferrer" style="color:#c4c4d4; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:color 0.2s ease, transform 0.2s ease;" onmouseover="this.style.color='#0088cc'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c4c4d4'; this.style.transform='translateY(0)';">
+                    <span style="font-size:15px;">📢</span> Telegram Channel (@NovelXplainer01)
+                </a>
+
+                <span style="color:#c4c4d4; display:inline-flex; align-items:center; gap:6px;">
+                    <span style="font-size:15px;">📍</span> Odisha, India
+                </span>
 
             </div>
         </div>
 
         <!-- Policies -->
-        <div style="text-align:center; margin:25px 0;">
-            <h3 style="color:#fff; font-size:14px; margin-bottom:15px;">
+        <div style="text-align:center; margin:30px 0;">
+            <h3 style="color:#fff; font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:18px; opacity:0.9;">
                 Legal Information
             </h3>
 
-            <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:12px 22px;">
+            <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:12px 25px;">
 
                 <a href="#terms" onclick="alert('Terms & Conditions: By using NovelXplainer Digital Web Services, you agree to the applicable service terms and selected subscription plan.')"
-                   style="color:#ff5272; font-size:12px; text-decoration:none;">
+                   style="color:#ff5272; font-size:12px; font-weight:500; text-decoration:none; padding:6px 12px; background:rgba(255,82,114,0.06); border-radius:6px; border:1px solid rgba(255,82,114,0.15); transition:all 0.2s ease;" onmouseover="this.style.background='rgba(255,82,114,0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255,82,114,0.06)'; this.style.transform='translateY(0)';">
                     Terms & Conditions
                 </a>
 
                 <a href="#privacy" onclick="alert('Privacy Policy: We use necessary account information for login, service delivery and subscription verification. We take reasonable steps to protect your information.')"
-                   style="color:#ff5272; font-size:12px; text-decoration:none;">
+                   style="color:#ff5272; font-size:12px; font-weight:500; text-decoration:none; padding:6px 12px; background:rgba(255,82,114,0.06); border-radius:6px; border:1px solid rgba(255,82,114,0.15); transition:all 0.2s ease;" onmouseover="this.style.background='rgba(255,82,114,0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255,82,114,0.06)'; this.style.transform='translateY(0)';">
                     Privacy Policy
                 </a>
 
                 <a href="#refund" onclick="alert('Refund & Cancellation Policy: Activated digital subscriptions are generally non-refundable. Duplicate payments and verified payment issues will be reviewed for appropriate resolution.')"
-                   style="color:#ff5272; font-size:12px; text-decoration:none;">
+                   style="color:#ff5272; font-size:12px; font-weight:500; text-decoration:none; padding:6px 12px; background:rgba(255,82,114,0.06); border-radius:6px; border:1px solid rgba(255,82,114,0.15); transition:all 0.2s ease;" onmouseover="this.style.background='rgba(255,82,114,0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255,82,114,0.06)'; this.style.transform='translateY(0)';">
                     Refund & Cancellation
                 </a>
 
@@ -3384,31 +3599,31 @@
         </div>
 
         <!-- Company Information -->
-        <div style="text-align:center; margin:25px 0;">
-            <p style="font-size:12px; color:#77778d; margin:5px;">
-                <strong style="color:#c4c4d4;">Business Name:</strong>
+        <div style="text-align:center; margin:30px 0; background:rgba(255,255,255,0.02); padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); max-width:600px; margin-left:auto; margin-right:auto;">
+            <p style="font-size:12px; color:#77778d; margin:4px 0;">
+                <strong style="color:#c4c4d4; font-weight:600;">Business Name:</strong>
                 NovelXplainer Digital Web Services
             </p>
 
-            <p style="font-size:12px; color:#77778d; margin:5px;">
-                <strong style="color:#c4c4d4;">Operated By:</strong>
+            <p style="font-size:12px; color:#77778d; margin:4px 0;">
+                <strong style="color:#c4c4d4; font-weight:600;">Operated By:</strong>
                 Sibaram Patra
             </p>
 
-            <p style="font-size:12px; color:#77778d; margin:5px;">
-                <strong style="color:#c4c4d4;">Location:</strong>
+            <p style="font-size:12px; color:#77778d; margin:4px 0;">
+                <strong style="color:#c4c4d4; font-weight:600;">Location:</strong>
                 Odisha, India
             </p>
         </div>
 
         <!-- Bottom -->
-        <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:18px; text-align:center;">
+        <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:20px; text-align:center;">
 
-            <p style="font-size:11px; color:#77778d; margin:0 0 8px;">
-                © 2026 <span style="color:#ff5272; font-weight:700;">NovelXplainer</span>. All Rights Reserved.
+            <p style="font-size:11px; color:#77778d; margin:0 0 6px;">
+                © 2026 <span style="color:#ff2d55; font-weight:700;">NovelXplainer</span>. All Rights Reserved.
             </p>
 
-            <p style="font-size:10px; color:#66667a; margin:0;">
+            <p style="font-size:10px; color:#66667a; margin:0; letter-spacing:0.3px;">
                 Designed for a better digital experience.
             </p>
 
@@ -3416,5 +3631,4 @@
 
     </div>
 </footer>
-
 </html>
