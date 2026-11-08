@@ -1852,7 +1852,7 @@ def stream_large_audio(user_id: int, track_msg_id: int):
                 slice_data = slice_data[:target_end - cur_pos]
             if not slice_data:
                 break
-            yield slice_data
+            yield bytes(slice_data)
             cur_pos += len(slice_data)
 
         if target_end is not None and cur_pos >= target_end:
@@ -1880,12 +1880,15 @@ def stream_large_audio(user_id: int, track_msg_id: int):
                         break
                     if not raw_chunk:
                         break
+                    # Convert bytearray/memoryview to bytes immediately so Werkzeug WSGI never fails assertion
+                    raw_bytes = bytes(raw_chunk)
+
                     # Cache aligned 128 KB block in RAM for instant backward/forward re-seeks
                     if len(blocks_map) < 240:
-                        blocks_map[cur_blk_idx] = bytes(raw_chunk)
+                        blocks_map[cur_blk_idx] = raw_bytes
                     cur_blk_idx += 1
 
-                    out_chunk = raw_chunk
+                    out_chunk = raw_bytes
                     if first_chunk and skip_bytes > 0:
                         out_chunk = out_chunk[skip_bytes:]
                         first_chunk = False
@@ -1930,7 +1933,7 @@ def stream_large_audio(user_id: int, track_msg_id: int):
                     continue
                 if chunk is None:
                     break
-                yield chunk
+                yield bytes(chunk)
         except GeneratorExit:
             stop_event.set()
         finally:
