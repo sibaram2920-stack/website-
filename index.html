@@ -271,12 +271,42 @@
         .profile-logout-btn { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(244, 63, 94, 0.45); background: rgba(244, 63, 94, 0.14); color: #fb7185; font-family: var(--font-main); font-size: 13.5px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; margin-top: 4px; }
         .profile-logout-btn:hover { background: rgba(244, 63, 94, 0.24); border-color: var(--danger); color: #ffffff; }
 
+        /* Top Trending Hero Banner Slider (Pocket FM Style) */
+        .hero-banner-wrap { position: relative; width: 100%; border-radius: 18px; overflow: hidden; margin-bottom: 20px; background: linear-gradient(135deg, #161625 0%, #1d1128 55%, #0c0c14 100%); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55); display: none; }
+        .hero-slides-track { display: flex; transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); width: 100%; }
+        .hero-slide { min-width: 100%; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; position: relative; overflow: hidden; cursor: pointer; }
+        .hero-slide-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: blur(26px) brightness(0.32); transform: scale(1.15); pointer-events: none; z-index: 0; }
+        .hero-slide-content { position: relative; z-index: 2; flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+        .hero-trending-pill { background: var(--accent-gradient); color: #ffffff; font-family: var(--font-display); font-size: 11px; font-weight: 800; padding: 4px 11px; border-radius: 999px; letter-spacing: 0.04em; text-transform: uppercase; box-shadow: 0 4px 14px var(--accent-glow); display: inline-flex; align-items: center; gap: 5px; }
+        .hero-slide-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: #ffffff; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .hero-slide-meta { font-size: 12.5px; font-weight: 600; color: #d1d5db; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .hero-listen-btn { margin-top: 4px; background: #ffffff; color: #09090f; border: none; padding: 9px 18px; border-radius: 999px; font-family: var(--font-display); font-size: 13px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45); transition: transform 0.2s ease; }
+        .hero-listen-btn:hover { transform: scale(1.04); }
+        .hero-slide-cover { position: relative; z-index: 2; width: 112px; height: 112px; border-radius: 14px; overflow: hidden; flex-shrink: 0; border: 1.5px solid rgba(255, 255, 255, 0.18); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.65); background: #12121e; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+        .hero-slide-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .hero-dots { position: absolute; bottom: 10px; left: 24px; z-index: 3; display: flex; gap: 6px; }
+        .hero-dot { width: 7px; height: 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.3); border: none; padding: 0; cursor: pointer; transition: all 0.25s ease; }
+        .hero-dot.active { width: 20px; background: var(--accent); }
+
+        /* Top 10 Rank Badge & Heart Favorite Button on Novel Cards */
+        .novel-rank-badge { position: absolute; top: 9px; left: 9px; z-index: 4; background: linear-gradient(135deg, #ff2d55 0%, #ff6b2b 100%); color: #ffffff; font-family: var(--font-display); font-size: 10.5px; font-weight: 800; padding: 3px 9px; border-radius: 999px; letter-spacing: 0.03em; box-shadow: 0 4px 14px rgba(255, 45, 85, 0.55); border: 1px solid rgba(255, 255, 255, 0.28); pointer-events: none; }
+        .novel-fav-btn { position: absolute; top: 8px; right: 8px; z-index: 4; width: 32px; height: 32px; border-radius: 50%; background: rgba(7, 7, 11, 0.68); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.18); color: #ffffff; font-size: 15px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.18s ease, background 0.18s ease; padding: 0; }
+        .novel-fav-btn:hover { transform: scale(1.12); background: rgba(255, 45, 85, 0.28); }
+        .novel-fav-btn.saved { border-color: rgba(255, 45, 85, 0.65); background: rgba(255, 45, 85, 0.22); }
+
         /* Mobile-Only Bottom Logo Bar (Hidden on Laptop & Desktop; Shown ONLY on Mobile) */
         .mobile-bottom-nav { display: none !important; }
         @media (max-width: 680px) {
             body { padding-bottom: 150px; }
             .player-dock { bottom: calc(64px + env(safe-area-inset-bottom, 0px)); width: min(350px, 94vw); }
-            #subBadge, #navLoginBtn { display: none !important; }
+            .navbar { flex-wrap: nowrap; justify-content: space-between; }
+            .user-controls { width: auto; margin-left: auto; justify-content: flex-end; overflow: visible; flex-shrink: 0; }
+            #navLoginBtn { display: none !important; }
+            #subBadge { display: inline-flex !important; margin-left: auto; margin-right: 8px; font-size: 11px; padding: 5px 10px; white-space: nowrap; }
+            .hero-slide { padding: 16px 16px 24px; gap: 14px; }
+            .hero-slide-title { font-size: 17px; }
+            .hero-slide-cover { width: 88px; height: 88px; border-radius: 12px; }
+            .hero-dots { left: 16px; bottom: 8px; }
             .mobile-bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; height: calc(58px + env(safe-area-inset-bottom, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); background: rgba(7, 7, 11, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.09); display: flex !important; align-items: center; justify-content: space-around; z-index: 95; box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.65); }
             .mob-nav-item { background: transparent; border: none; color: #9ca3af; display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 14px; cursor: pointer; position: relative; transition: color 0.18s ease, transform 0.18s ease, background 0.18s ease; padding: 0; }
             .mob-nav-item:hover, .mob-nav-item.active { color: #ffffff; background: rgba(255, 255, 255, 0.06); }
@@ -300,8 +330,7 @@
             <button id="backNavBtn" class="user-btn" style="display:none; border-color:var(--accent); color:var(--accent);" onclick="closeEpisodesView()">← Back to Novels</button>
             <button id="adminColorBtn" class="user-btn" style="display:none; border-color:var(--accent); color:var(--accent);" onclick="openAdminThemeModal()">🎨 Website Color</button>
             <button id="tgSessionBtn" class="user-btn" style="display:none;" onclick="openTgAuthModal()">🔑 TG Audio Session: Checking...</button>
-            <button class="user-btn" onclick="openReviewModal(true)" title="Read or Write User Reviews">⭐ Reviews</button>
-            <div id="subBadge" class="sub-pill" style="cursor:pointer;" onclick="openSubscriptionModal()" title="Click to view Subscription Plans & Payment Methods">⏳ Checking Access...</div>
+            <div id="subBadge" class="sub-pill" style="cursor:pointer; margin-left:auto; margin-right:8px;" onclick="openSubscriptionModal()" title="Click to view Subscription Plans & Payment Methods">⏳ Checking Access...</div>
             <button class="user-btn" id="navLoginBtn" onclick="openLoginModal()">📲 Login: <span id="displayUserId">...</span> ⚙️</button>
         </div>
     </nav>
@@ -320,18 +349,25 @@
         <div id="lockedBanner" style="display:none !important;"><span id="lockedMessage"></span></div>
 
         <div id="directoryView">
+            <!-- Top Trending Hero Banner Slider (Pocket FM Style) -->
+            <div id="heroTrendingBanner" class="hero-banner-wrap">
+                <div id="heroSlidesTrack" class="hero-slides-track"></div>
+                <div id="heroDotsBox" class="hero-dots"></div>
+            </div>
+
             <div class="toolbar">
                 <div class="search-wrap">
                     <span class="search-icon">🔍</span>
                     <input type="text" id="searchInput" class="search-input" placeholder="Search novel title (e.g., Urban, Doctor, Farming...)" oninput="renderNovels()">
                 </div>
                 <div class="tabs">
-                    <button class="tab active" onclick="selectCategory('all', this)">All Novels</button>
+                    <button class="tab active" id="tabBtnAll" onclick="selectCategory('all', this)">All Novels</button>
+                    <button class="tab" id="tabBtnTrending" onclick="selectCategory('trending', this)">🔥 Top Trending</button>
+                    <button class="tab" id="tabBtnSaved" onclick="selectCategory('saved', this)">❤️ My List</button>
                     <button class="tab" onclick="selectCategory('ongoing', this)">🔄 Ongoing</button>
                     <button class="tab" onclick="selectCategory('completed', this)">📚 Completed</button>
                     <button class="tab" onclick="selectCategory('adult', this)">🔞 Adult</button>
                     <button class="tab" id="subTabBtn" style="display:none;" onclick="openSubscriptionTab(this)">💳 Subscription</button>
-                    <button class="tab" onclick="openReviewModal(true)">⭐ User Reviews</button>
                 </div>
             </div>
 
@@ -380,7 +416,10 @@
                             <div class="pfm-poster-bottom-track">
                                 <div class="pfm-poster-mute-row">
                                     <button type="button" id="posterMuteBtn" class="pfm-poster-mute-btn" onclick="toggleMuteAudio()" title="Mute / Unmute">🔊</button>
-                                    <button type="button" id="posterSpeedBtn" class="pfm-poster-mute-btn" onclick="cycleSpeed()" style="font-size:11px; font-weight:800; background:rgba(0,0,0,0.55); padding:2px 8px; border-radius:4px;">1.0x</button>
+                                    <div style="display:flex; align-items:center; gap:6px;">
+                                        <button type="button" id="posterSleepBtn" class="pfm-poster-mute-btn" onclick="cycleSleepTimer()" style="font-size:11px; font-weight:800; background:rgba(0,0,0,0.55); padding:2px 8px; border-radius:4px;" title="Sleep Timer">🌙 Off</button>
+                                        <button type="button" id="posterSpeedBtn" class="pfm-poster-mute-btn" onclick="cycleSpeed()" style="font-size:11px; font-weight:800; background:rgba(0,0,0,0.55); padding:2px 8px; border-radius:4px;">1.0x</button>
+                                    </div>
                                 </div>
                                 <div class="pfm-poster-time-row">
                                     <span id="posterCurrentTime" class="pfm-poster-time-cur">00:00</span>
@@ -600,7 +639,6 @@
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                 <h3>📲 Telegram Phone Login</h3>
                 <div style="display:flex; gap:6px;">
-                    <button id="logoutBtn" class="user-btn" style="display:none; border-color:var(--danger); color:var(--danger);" onclick="logoutWebsiteUser()">🚪 Logout</button>
                     <button type="button" class="modal-close-cross" onclick="closeLoginModal()" title="Close">✕</button>
                 </div>
             </div>
@@ -958,30 +996,22 @@
                     </div>
                 </div>
 
-                <div id="profileSubSummary" style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;"></div>
-
-                <button type="button" id="profileLogoutBtn" class="profile-logout-btn" onclick="closeProfileModal(); logoutWebsiteUser();">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                    <span>Logout</span>
-                </button>
+                <div id="profileSubSummary" style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;"></div>
             </div>
         </div>
     </div>
 
     <!-- Mobile-Only Bottom Logo Bar (Shown ONLY on Mobile; Laptop & Desktop stays normal and does NOT show this bar) -->
     <nav id="mobileBottomNav" class="mobile-bottom-nav" aria-label="Mobile Navigation">
-        <button type="button" class="mob-nav-item active" id="mobNavHomeBtn" onclick="closeEpisodesView(); setMobileNavActive('home');" title="Home">
+        <button type="button" class="mob-nav-item active" id="mobNavHomeBtn" onclick="closeEpisodesView(); setMobileNavActive('home'); selectCategory('all', document.getElementById('tabBtnAll'));" title="Home">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"></path></svg>
         </button>
-        <button type="button" class="mob-nav-item" id="mobNavReviewsBtn" onclick="setMobileNavActive('reviews'); openReviewModal(true);" title="Reviews">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <button type="button" class="mob-nav-item" id="mobNavTrendingBtn" onclick="openTopTrendingFromMobileNav()" title="Top Content / Trending" style="font-size:20px;">
+            🔥
         </button>
         <button type="button" class="mob-nav-item" id="mobNavSubBtn" onclick="setMobileNavActive('sub'); openSubscriptionModal();" title="Subscription">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
             <span id="mobSubDot" class="mob-sub-dot expired"></span>
-        </button>
-        <button type="button" class="mob-nav-item" id="mobNavLoginBtn" onclick="setMobileNavActive('login'); openLoginModal();" title="Login">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
         </button>
         <button type="button" class="mob-nav-item" id="mobNavProfileBtn" onclick="setMobileNavActive('profile'); openProfileModal();" title="Profile">
             <img id="mobProfileImg" class="mob-nav-avatar" src="" alt="Profile" onerror="this.style.display='none'; document.getElementById('mobProfileSvg').style.display='block';">
@@ -1075,10 +1105,10 @@
                 return;
             }
             const timeStr = formatRemainingTime(remSec);
-            userStatusLabel = `Active (${timeStr} left)`;
+            userStatusLabel = `Active • ${timeStr}`;
             if (badge) {
                 badge.className = 'sub-pill';
-                badge.innerHTML = `✅ Active (${timeStr} left)`;
+                badge.innerHTML = `✅ Active • ${timeStr}`;
             }
             document.querySelectorAll('.live-sub-timer').forEach(el => {
                 el.innerText = `${timeStr} LEFT`;
@@ -1145,15 +1175,29 @@
         function setMobileNavActive(tabKey) {
             const map = {
                 home: 'mobNavHomeBtn',
-                reviews: 'mobNavReviewsBtn',
+                trending: 'mobNavTrendingBtn',
                 sub: 'mobNavSubBtn',
-                login: 'mobNavLoginBtn',
                 profile: 'mobNavProfileBtn'
             };
             Object.keys(map).forEach(k => {
                 const el = document.getElementById(map[k]);
                 if (el) el.classList.toggle('active', k === tabKey);
             });
+        }
+
+        function openTopTrendingFromMobileNav() {
+            setMobileNavActive('trending');
+            if (document.getElementById('episodesView')?.style.display !== 'none') {
+                closeEpisodesView();
+            }
+            const trendTab = document.getElementById('tabBtnTrending');
+            selectCategory('trending', trendTab);
+            const heroEl = document.getElementById('heroTrendingBanner');
+            if (heroEl && heroEl.style.display !== 'none') {
+                heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
         function getSplitUserNames() {
@@ -1622,7 +1666,7 @@
                 }
                 updateHeaderDisplay();
                 badge.className = 'sub-pill expired';
-                badge.innerHTML = `🔒 Login Required (Click to Login)`;
+                badge.innerHTML = `🔒 Inactive`;
                 if (banner) banner.style.display = 'none';
                 if (lockedMsg) lockedMsg.innerHTML = '';
                 return;
@@ -1654,13 +1698,13 @@
                     userDaysLeft = (data.days_left !== undefined && data.days_left !== null) ? data.days_left : null;
                     badge.className = 'sub-pill';
                     if (isAdminUser) {
-                        badge.innerHTML = `👑 ${data.label}`;
+                        badge.innerHTML = `👑 Admin`;
                     } else if (userExpiryTimestamp) {
                         const remSec = getRemainingSecondsNow();
-                        badge.innerHTML = `✅ Active (${formatRemainingTime(remSec)} left)`;
+                        badge.innerHTML = `✅ Active • ${formatRemainingTime(remSec)}`;
                         startLiveExpiryCountdown();
                     } else {
-                        badge.innerHTML = `✅ ${data.label || 'Active Member'}`;
+                        badge.innerHTML = `✅ ${data.label || 'Active'}`;
                     }
                     banner.style.display = 'none';
                 } else {
@@ -1671,7 +1715,7 @@
                         expiryCountdownInterval = null;
                     }
                     badge.className = 'sub-pill expired';
-                    badge.innerHTML = `🔒 Inactive (Free Preview • Click to Subscribe)`;
+                    badge.innerHTML = `🔒 Inactive`;
                     if (banner) banner.style.display = 'none';
                     if (lockedMsg) lockedMsg.innerHTML = '';
                 }
@@ -2065,8 +2109,119 @@
         function selectCategory(cat, btnEl) {
             currentCategory = cat;
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            btnEl.classList.add('active');
+            if (btnEl) btnEl.classList.add('active');
             renderNovels();
+        }
+
+        function getSavedNovelsList() {
+            try {
+                const raw = localStorage.getItem('nx_saved_novels');
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed) ? parsed.map(String) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function isNovelSaved(topicId) {
+            return getSavedNovelsList().includes(String(topicId));
+        }
+
+        function toggleSaveNovel(event, topicId) {
+            if (event) event.stopPropagation();
+            const tidStr = String(topicId);
+            let saved = getSavedNovelsList();
+            if (saved.includes(tidStr)) {
+                saved = saved.filter(id => id !== tidStr);
+            } else {
+                saved.unshift(tidStr);
+            }
+            try {
+                localStorage.setItem('nx_saved_novels', JSON.stringify(saved));
+            } catch (e) {}
+            renderNovels();
+        }
+
+        let heroSliderInterval = null;
+        let currentHeroSlideIndex = 0;
+        let heroTopNovelsCount = 0;
+
+        function goToHeroSlide(idx, ev) {
+            if (ev) ev.stopPropagation();
+            if (heroTopNovelsCount <= 0) return;
+            currentHeroSlideIndex = ((idx % heroTopNovelsCount) + heroTopNovelsCount) % heroTopNovelsCount;
+            const track = document.getElementById('heroSlidesTrack');
+            if (track) {
+                track.style.transform = `translateX(-${currentHeroSlideIndex * 100}%)`;
+            }
+            document.querySelectorAll('#heroDotsBox .hero-dot').forEach((d, i) => {
+                d.classList.toggle('active', i === currentHeroSlideIndex);
+            });
+        }
+
+        function renderHeroTrendingBanner(rankedNovels, localSt) {
+            const bannerWrap = document.getElementById('heroTrendingBanner');
+            const track = document.getElementById('heroSlidesTrack');
+            const dotsBox = document.getElementById('heroDotsBox');
+            if (!bannerWrap || !track || !dotsBox) return;
+
+            const top5 = rankedNovels.slice(0, 5);
+            heroTopNovelsCount = top5.length;
+            if (heroTopNovelsCount === 0) {
+                bannerWrap.style.display = 'none';
+                if (heroSliderInterval) {
+                    clearInterval(heroSliderInterval);
+                    heroSliderInterval = null;
+                }
+                return;
+            }
+
+            bannerWrap.style.display = 'block';
+            const iconMap = { ongoing: '🔄', completed: '📚', adult: '🔞' };
+
+            track.innerHTML = top5.map((n, idx) => {
+                const safeName = n.name.replace(/'/g, "\'");
+                const parsed = parseNovelTitleAndChapters(n.name, n.audio_count);
+                const displayTitle = parsed.cleanTitle;
+                const tidKey = String(n.topic_id || 0);
+                const viewsCount = Math.max(Number(n.views || 0), Number(localSt.novels[tidKey] || 0));
+                const coverUrl = (n.topic_id && Number(n.cover_msg_id) > 0)
+                    ? `${apiBaseUrl}/api/novel_cover/${n.topic_id}?v=${n.cover_msg_id}`
+                    : '';
+                const icon = iconMap[n.status] || '🎧';
+
+                return `
+                <div class="hero-slide" onclick="openTopicPlaylist('${n.topic_id || 0}', '${safeName}')">
+                    ${coverUrl ? `<div class="hero-slide-bg" style="background-image:url('${coverUrl}');"></div>` : ''}
+                    <div class="hero-slide-content">
+                        <span class="hero-trending-pill">🔥 #${idx + 1} Trending</span>
+                        <div class="hero-slide-title">${displayTitle}</div>
+                        <div class="hero-slide-meta">
+                            <span>▷ ${formatCompactCount(viewsCount)} Views</span>
+                            <span>•</span>
+                            <span style="text-transform:uppercase; color:#fca5a5;">${n.status || 'ongoing'}</span>
+                        </div>
+                        <button type="button" class="hero-listen-btn" onclick="event.stopPropagation(); openTopicPlaylist('${n.topic_id || 0}', '${safeName}')">▷ Listen Now</button>
+                    </div>
+                    <div class="hero-slide-cover">
+                        ${coverUrl ? `<img src="${coverUrl}" alt="${displayTitle}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerText='${icon}';">` : `<span>${icon}</span>`}
+                    </div>
+                </div>`;
+            }).join('');
+
+            dotsBox.innerHTML = top5.map((_, idx) =>
+                `<button type="button" class="hero-dot ${idx === 0 ? 'active' : ''}" onclick="goToHeroSlide(${idx}, event)" aria-label="Slide ${idx + 1}"></button>`
+            ).join('');
+
+            currentHeroSlideIndex = 0;
+            track.style.transform = 'translateX(0%)';
+
+            if (heroSliderInterval) clearInterval(heroSliderInterval);
+            if (heroTopNovelsCount > 1) {
+                heroSliderInterval = setInterval(() => {
+                    goToHeroSlide(currentHeroSlideIndex + 1);
+                }, 4500);
+            }
         }
 
         function getLocalViewStats() {
@@ -2123,21 +2278,52 @@
         function renderNovels() {
             const q = document.getElementById('searchInput').value.toLowerCase().trim();
             const grid = document.getElementById('novelGrid');
+            const localSt = getLocalViewStats();
+            const localRevs = getLocalReviews();
+            const savedIds = getSavedNovelsList();
 
-            const filtered = novelsData.filter(n => {
-                const catMatch = currentCategory === 'all' || n.status === currentCategory;
+            // Compute Top 10 Rank Map & Top 5 Hero Banner based on viewsCount
+            const sortedByViews = [...novelsData].sort((a, b) => {
+                const va = Math.max(Number(a.views || 0), Number(localSt.novels[String(a.topic_id || 0)] || 0));
+                const vb = Math.max(Number(b.views || 0), Number(localSt.novels[String(b.topic_id || 0)] || 0));
+                return vb - va;
+            });
+
+            const rankMap = {};
+            sortedByViews.slice(0, 10).forEach((n, idx) => {
+                rankMap[String(n.topic_id || 0)] = idx + 1;
+            });
+
+            renderHeroTrendingBanner(sortedByViews, localSt);
+
+            let baseList = novelsData;
+            if (currentCategory === 'trending') {
+                baseList = sortedByViews;
+            }
+
+            const filtered = baseList.filter(n => {
+                const tidStr = String(n.topic_id || 0);
+                let catMatch = false;
+                if (currentCategory === 'all' || currentCategory === 'trending') {
+                    catMatch = true;
+                } else if (currentCategory === 'saved') {
+                    catMatch = savedIds.includes(tidStr);
+                } else {
+                    catMatch = n.status === currentCategory;
+                }
                 const qMatch = !q || n.name.toLowerCase().includes(q);
                 return catMatch && qMatch;
             });
 
             if (filtered.length === 0) {
-                grid.innerHTML = `<div class="novel-card"><div class="novel-card-body"><p style="color:var(--text-secondary)">No matching novels found.</p></div></div>`;
+                const emptyMsg = currentCategory === 'saved'
+                    ? 'No saved novels in ❤️ My List yet. Tap the heart icon (🤍) on any novel cover to bookmark it!'
+                    : 'No matching novels found.';
+                grid.innerHTML = `<div class="novel-card"><div class="novel-card-body"><p style="color:var(--text-secondary)">${emptyMsg}</p></div></div>`;
                 return;
             }
 
             const iconMap = { ongoing: '🔄', completed: '📚', adult: '🔞' };
-            const localSt = getLocalViewStats();
-            const localRevs = getLocalReviews();
 
             grid.innerHTML = filtered.map(n => {
                 const icon = iconMap[n.status] || '🎧';
@@ -2151,6 +2337,12 @@
 
                 const tidKey = String(n.topic_id || 0);
                 const viewsCount = Math.max(Number(n.views || 0), Number(localSt.novels[tidKey] || 0));
+                const rankNum = rankMap[tidKey] || 0;
+                const rankBadgeHtml = rankNum > 0
+                    ? `<div class="novel-rank-badge">🔥 #${rankNum}${rankNum === 1 ? ' Trending' : ''}</div>`
+                    : '';
+                const isSaved = savedIds.includes(tidKey);
+                const favBtnHtml = `<button type="button" class="novel-fav-btn ${isSaved ? 'saved' : ''}" onclick="toggleSaveNovel(event, '${tidKey}')" title="${isSaved ? 'Remove from My List' : 'Save to My List'}">${isSaved ? '❤️' : '🤍'}</button>`;
 
                 const topicRevs = localRevs.filter(r => String(r.topic_id) === tidKey);
                 const revCount = Math.max(Number(n.review_count || 0), topicRevs.length);
@@ -2159,6 +2351,8 @@
                 return `
                 <div class="novel-card" onclick="openTopicPlaylist('${n.topic_id || 0}', '${safeName}')">
                     <div class="novel-cover-wrap">
+                        ${rankBadgeHtml}
+                        ${favBtnHtml}
                         ${coverUrl ? `<img class="novel-cover-img" width="480" height="480" src="${coverUrl}" alt="${displayTitle}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
                         <div class="novel-cover-fallback" style="display: ${coverUrl ? 'none' : 'flex'};">
                             <div style="font-size:36px; margin-bottom:8px;">${icon}</div>
@@ -2177,7 +2371,7 @@
                             <span style="color:var(--warning); font-weight:700;">★ ${ratingVal}${revCount > 0 ? ' (' + revCount + ')' : ''}</span>
                         </div>
                         <div style="display:flex; align-items:center; justify-content:space-between; font-size:11.5px; color:var(--text-secondary); padding-top:6px; border-top:1px solid rgba(255,255,255,0.06);">
-                            <span id="card-views-${n.topic_id}"> ${formatCompactCount(viewsCount)} Views</span>
+                            <span id="card-views-${n.topic_id}">▷ ${formatCompactCount(viewsCount)} Views</span>
                         </div>
                     </div>
                 </div>`;
@@ -2398,7 +2592,7 @@
             const viewsBadge = document.getElementById('pfmTotalViewsBadge');
             const seriesBadge = document.getElementById('pfmSeriesBadge');
             if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(playsVal)} PLAYS`;
-            if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(viewsVal)} VIEWS`;
+            if (viewsBadge) viewsBadge.innerText = `▷ ${formatCompactCount(viewsVal)} VIEWS`;
             if (seriesBadge) seriesBadge.innerText = status.toUpperCase();
 
             const localMeta = getLocalCustomMeta(topicId);
@@ -2475,7 +2669,7 @@
             }
             const viewsBadge = document.getElementById('pfmTotalViewsBadge');
             const playsBadge = document.getElementById('pfmTotalPlaysBadge');
-            if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(curV)} VIEWS`;
+            if (viewsBadge) viewsBadge.innerText = `▷ ${formatCompactCount(curV)} VIEWS`;
             if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(curP)} PLAYS`;
 
             try {
@@ -2495,7 +2689,7 @@
                         found.views = srvV;
                         found.plays = srvP;
                     }
-                    if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(srvV)} VIEWS`;
+                    if (viewsBadge) viewsBadge.innerText = `▷ ${formatCompactCount(srvV)} VIEWS`;
                     if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(srvP)} PLAYS`;
                 }
             } catch (e) {}
@@ -2525,11 +2719,11 @@
             }
 
             const epBadge = document.getElementById(`ep-views-${messageId}`);
-            if (epBadge) epBadge.innerHTML = ` ${formatCompactCount(curEpV)} Views`;
+            if (epBadge) epBadge.innerHTML = `▷ ${formatCompactCount(curEpV)} Views`;
 
             const viewsBadge = document.getElementById('pfmTotalViewsBadge');
             const playsBadge = document.getElementById('pfmTotalPlaysBadge');
-            if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(curNovV)} VIEWS`;
+            if (viewsBadge) viewsBadge.innerText = `▷ ${formatCompactCount(curNovV)} VIEWS`;
             if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(st.plays[tidKey])} PLAYS`;
 
             try {
@@ -2556,8 +2750,8 @@
                         found.views = srvV;
                         found.plays = srvP;
                     }
-                    if (epBadge) epBadge.innerHTML = ` ${formatCompactCount(srvA)} Views`;
-                    if (viewsBadge) viewsBadge.innerText = ` ${formatCompactCount(srvV)} VIEWS`;
+                    if (epBadge) epBadge.innerHTML = `▷ ${formatCompactCount(srvA)} Views`;
+                    if (viewsBadge) viewsBadge.innerText = `▷ ${formatCompactCount(srvV)} VIEWS`;
                     if (playsBadge) playsBadge.innerText = `🎧 ${formatCompactCount(srvP)} PLAYS`;
                 }
             } catch (e) {}
@@ -2696,7 +2890,7 @@
                     <div class="ep-left">
                         <div class="ep-meta">
                             <div class="ep-title">${pfmTitle}</div>
-                            <div class="ep-sub">${durClock}<span id="ep-views-${ep.message_id}"> ${formatCompactCount(epViews)} Views</span> ${statusInlineHtml}</div>
+                            <div class="ep-sub">${durClock}<span id="ep-views-${ep.message_id}">▷ ${formatCompactCount(epViews)} Views</span> ${statusInlineHtml}</div>
                         </div>
                     </div>
                     <button type="button" class="pfm-circle-play" title="${isLocked ? 'Unlock Episode' : 'Play Episode'}">${circleIcon}</button>
@@ -2936,14 +3130,24 @@
                 if (pt) pt.innerText = totStr;
             };
 
+            updateMediaSessionMetadata(title);
+
             audioEl.onplaying = () => {
                 setEpisodeRowState(messageId, 'playing');
                 document.getElementById('nowPlayingTitle').innerText = title;
+                if ('mediaSession' in navigator) {
+                    navigator.mediaSession.playbackState = 'playing';
+                    updateMediaSessionPositionState();
+                }
             };
 
             audioEl.onpause = () => {
                 if (String(currentPlayingMsgId) === String(messageId) && !audioEl.ended) {
                     setEpisodeRowState(messageId, 'paused');
+                }
+                if ('mediaSession' in navigator) {
+                    navigator.mediaSession.playbackState = 'paused';
+                    updateMediaSessionPositionState();
                 }
             };
 
@@ -2976,6 +3180,7 @@
                         if (pp) pp.style.width = `${pct}%`;
                         if (ps) ps.value = sliderVal;
                     }
+                    updateMediaSessionPositionState();
                 }
                 if (!audioEl.paused) {
                     setEpisodeRowState(messageId, 'playing');
@@ -3116,7 +3321,128 @@
             }
         });
 
+        /* --- Phone Lock-Screen MediaSession API & Sleep Timer --- */
+        function updateMediaSessionPositionState() {
+            if (!('mediaSession' in navigator) || typeof navigator.mediaSession.setPositionState !== 'function') return;
+            const dur = audioEl.duration;
+            if (dur && isFinite(dur) && dur > 0) {
+                try {
+                    navigator.mediaSession.setPositionState({
+                        duration: dur,
+                        playbackRate: audioEl.playbackRate || 1.0,
+                        position: Math.min(dur, Math.max(0, audioEl.currentTime || 0))
+                    });
+                } catch (e) {}
+            }
+        }
+
+        function updateMediaSessionMetadata(chapterTitle) {
+            if (!('mediaSession' in navigator)) return;
+            const cleanNovel = currentNovelName
+                ? parseNovelTitleAndChapters(currentNovelName).cleanTitle
+                : 'NovelXplainer Audio';
+            const foundNovel = novelsData.find(n => String(n.topic_id) === String(currentTopicId)) || {};
+            const coverMsgId = Number(foundNovel.cover_msg_id || 0);
+            const coverUrl = (currentTopicId && coverMsgId > 0)
+                ? `${apiBaseUrl || window.location.origin}/api/novel_cover/${currentTopicId}?v=${coverMsgId}`
+                : '';
+
+            try {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: chapterTitle || 'Audio Chapter',
+                    artist: cleanNovel,
+                    album: 'NovelXplainer Audio',
+                    artwork: coverUrl ? [
+                        { src: coverUrl, sizes: '96x96', type: 'image/jpeg' },
+                        { src: coverUrl, sizes: '192x192', type: 'image/jpeg' },
+                        { src: coverUrl, sizes: '512x512', type: 'image/jpeg' }
+                    ] : []
+                });
+            } catch (e) {}
+
+            const actions = [
+                ['play', () => { audioEl.play().catch(() => {}); }],
+                ['pause', () => { audioEl.pause(); }],
+                ['previoustrack', () => { playPrevEpisode(); }],
+                ['nexttrack', () => { playNextEpisode(); }],
+                ['seekbackward', (details) => { seekRelative(-(details.seekOffset || 10)); }],
+                ['seekforward', (details) => { seekRelative(details.seekOffset || 10); }],
+                ['seekto', (details) => {
+                    if (details.seekTime !== undefined && isFinite(details.seekTime)) {
+                        performInstantSeek(details.seekTime);
+                    }
+                }]
+            ];
+            actions.forEach(([action, handler]) => {
+                try {
+                    navigator.mediaSession.setActionHandler(action, handler);
+                } catch (e) {}
+            });
+        }
+
+        const sleepModes = ['off', 15, 30, 45, 'eoc'];
+        let sleepModeIndex = 0;
+        let sleepRemainingSec = 0;
+        let sleepIntervalId = null;
+
+        function updateSleepTimerButtonLabel() {
+            const btn = document.getElementById('posterSleepBtn');
+            if (!btn) return;
+            const mode = sleepModes[sleepModeIndex];
+            if (mode === 'off') {
+                btn.innerText = '🌙 Off';
+                btn.style.color = '#ffffff';
+            } else if (mode === 'eoc') {
+                btn.innerText = '🌙 End of Ch';
+                btn.style.color = 'var(--warning)';
+            } else {
+                const m = Math.floor(sleepRemainingSec / 60);
+                const s = sleepRemainingSec % 60;
+                btn.innerText = `🌙 ${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+                btn.style.color = 'var(--warning)';
+            }
+        }
+
+        function resetSleepTimerToOff() {
+            if (sleepIntervalId) {
+                clearInterval(sleepIntervalId);
+                sleepIntervalId = null;
+            }
+            sleepModeIndex = 0;
+            sleepRemainingSec = 0;
+            updateSleepTimerButtonLabel();
+        }
+
+        function cycleSleepTimer() {
+            sleepModeIndex = (sleepModeIndex + 1) % sleepModes.length;
+            if (sleepIntervalId) {
+                clearInterval(sleepIntervalId);
+                sleepIntervalId = null;
+            }
+            const mode = sleepModes[sleepModeIndex];
+            if (typeof mode === 'number') {
+                sleepRemainingSec = mode * 60;
+                sleepIntervalId = setInterval(() => {
+                    if (audioEl.paused) return;
+                    sleepRemainingSec = Math.max(0, sleepRemainingSec - 1);
+                    updateSleepTimerButtonLabel();
+                    if (sleepRemainingSec <= 0) {
+                        audioEl.pause();
+                        resetSleepTimerToOff();
+                    }
+                }, 1000);
+            } else {
+                sleepRemainingSec = 0;
+            }
+            updateSleepTimerButtonLabel();
+        }
+
         audioEl.addEventListener('ended', () => {
+            if (sleepModes[sleepModeIndex] === 'eoc') {
+                audioEl.pause();
+                resetSleepTimerToOff();
+                return;
+            }
             if (autoNextEnabled) {
                 playNextEpisode();
             }
@@ -3127,6 +3453,7 @@
             if (audioEl.paused && currentPlayingMsgId) {
                 audioEl.play().catch(() => {});
             }
+            updateMediaSessionPositionState();
         });
 
         function seekRelative(seconds) {
@@ -3143,6 +3470,7 @@
             document.getElementById('speedBtn').innerText = lbl;
             const pSpd = document.getElementById('posterSpeedBtn');
             if (pSpd) pSpd.innerText = lbl;
+            updateMediaSessionPositionState();
         }
 
         function toggleAutoNext() {
@@ -3519,114 +3847,415 @@
         setInterval(pollAdminAndDataSync, 7000);
     </script>
 </body>
-<footer style="background:linear-gradient(135deg,#0b0b14,#151525); color:#a1a1b5; padding:55px 20px 25px; margin-top:50px; border-top:1px solid rgba(255,255,255,0.08); font-family:'Inter',system-ui,-apple-system,sans-serif; position:relative; overflow:hidden;">
-    
-    <!-- Subtle Ambient Glow Effects -->
-    <div style="position:absolute; top:-50px; left:50%; transform:translateX(-50%); width:300px; height:100px; background:radial-gradient(ellipse at center, rgba(255,45,85,0.08) 0%, rgba(0,0,0,0) 70%); pointer-events:none;"></div>
+<footer class="nx-footer">
+    <style>
+        .nx-footer {
+            background: linear-gradient(145deg, #07070c 0%, #10101c 55%, #090912 100%);
+            color: #a1a1b5;
+            padding: 64px 20px 30px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
 
-    <div style="max-width:1100px; margin:auto; position:relative; z-index:1;">
+        /* Animated Top Border Shimmer */
+        .nx-footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 45, 85, 0.85), rgba(255, 107, 43, 0.85), transparent);
+            animation: nxBorderShimmer 6s linear infinite;
+        }
+
+        /* Floating Ambient Orbs */
+        .nx-footer-glow-1 {
+            position: absolute;
+            top: -65px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 420px;
+            height: 150px;
+            background: radial-gradient(ellipse at center, rgba(255, 45, 85, 0.16) 0%, rgba(255, 107, 43, 0.06) 45%, transparent 72%);
+            pointer-events: none;
+            animation: nxPulseGlow 5s ease-in-out infinite alternate;
+        }
+
+        .nx-footer-glow-2 {
+            position: absolute;
+            bottom: -80px;
+            right: 10%;
+            width: 280px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(0, 136, 204, 0.09) 0%, transparent 70%);
+            pointer-events: none;
+            animation: nxPulseGlow 7s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes nxBorderShimmer {
+            0% { transform: translateX(-30%); }
+            100% { transform: translateX(30%); }
+        }
+
+        @keyframes nxPulseGlow {
+            0% { opacity: 0.55; transform: translateX(-50%) scale(0.95); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        @keyframes nxEqWave {
+            0%, 100% { height: 5px; }
+            50% { height: 16px; }
+        }
+
+        .nx-footer-container {
+            max-width: 1120px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Brand Header & Live Audio Equalizer */
+        .nx-footer-brand {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .nx-brand-title-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .nx-brand-title-wrap:hover {
+            transform: scale(1.03);
+        }
+
+        .nx-eq-bars {
+            display: inline-flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 18px;
+            padding: 0 4px;
+        }
+
+        .nx-eq-bars span {
+            width: 3px;
+            background: linear-gradient(180deg, #ff2d55, #ff6b2b);
+            border-radius: 99px;
+            animation: nxEqWave 1.1s ease-in-out infinite;
+        }
+
+        .nx-eq-bars span:nth-child(2) { animation-delay: 0.2s; }
+        .nx-eq-bars span:nth-child(3) { animation-delay: 0.4s; }
+        .nx-eq-bars span:nth-child(4) { animation-delay: 0.15s; }
+
+        .nx-brand-title {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .nx-brand-highlight {
+            background: linear-gradient(135deg, #ff2d55 0%, #ff6b2b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nx-brand-desc {
+            font-size: 13.5px;
+            line-height: 1.7;
+            max-width: 560px;
+            margin: 0 auto;
+            color: #9ca3af;
+        }
+
+        .nx-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+            margin: 32px 0;
+        }
+
+        .nx-sec-heading {
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            margin-bottom: 18px;
+            opacity: 0.9;
+        }
+
+        /* Contact & Social Pills */
+        .nx-contact-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .nx-contact-pill {
+            color: #d1d5db;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .nx-contact-pill:hover {
+            color: #ffffff;
+            border-color: rgba(255, 45, 85, 0.5);
+            background: rgba(255, 45, 85, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 45, 85, 0.18);
+        }
+
+        .nx-contact-pill.tg-pill:hover {
+            border-color: rgba(0, 136, 204, 0.55);
+            background: rgba(0, 136, 204, 0.12);
+            box-shadow: 0 8px 20px rgba(0, 136, 204, 0.22);
+        }
+
+        .nx-contact-icon {
+            font-size: 15px;
+            transition: transform 0.25s ease;
+        }
+
+        .nx-contact-pill:hover .nx-contact-icon {
+            transform: scale(1.2) rotate(-6deg);
+        }
+
+        /* Legal Policy Buttons */
+        .nx-policy-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px 18px;
+            margin-bottom: 32px;
+        }
+
+        .nx-policy-btn {
+            color: #ff6b8b;
+            font-size: 12.5px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: rgba(255, 45, 85, 0.07);
+            border-radius: 9px;
+            border: 1px solid rgba(255, 45, 85, 0.2);
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nx-policy-btn:hover {
+            color: #ffffff;
+            background: linear-gradient(135deg, #ff2d55 0%, #ff6b2b 100%);
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(255, 45, 85, 0.35);
+        }
+
+        /* Company Info Card */
+        .nx-company-card {
+            text-align: center;
+            margin: 28px auto;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.015) 100%);
+            padding: 18px 22px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            max-width: 640px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nx-company-card:hover {
+            border-color: rgba(255, 45, 85, 0.28);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+        }
+
+        .nx-company-item {
+            font-size: 12px;
+            color: #8b8b9e;
+            margin: 0;
+        }
+
+        .nx-company-item strong {
+            color: #e5e7eb;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 2px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Bottom Bar & Back to Top */
+        .nx-footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .nx-top-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+        }
+
+        .nx-top-btn:hover {
+            background: var(--accent, #ff2d55);
+            color: #ffffff;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(255, 45, 85, 0.4);
+        }
+
+        @media (max-width: 680px) {
+            .nx-footer { padding: 48px 16px 28px; }
+            .nx-company-card { flex-direction: column; gap: 10px; }
+            .nx-footer-bottom { flex-direction: column; text-align: center; justify-content: center; }
+        }
+    </style>
+
+    <!-- Subtle Ambient Glow Effects -->
+    <div class="nx-footer-glow-1"></div>
+    <div class="nx-footer-glow-2"></div>
+
+    <div class="nx-footer-container">
 
         <!-- Brand -->
-        <div style="text-align:center; margin-bottom:35px;">
-            <h2 style="color:#ffffff; font-size:24px; font-weight:800; margin:0 0 10px; letter-spacing:0.5px; display:inline-block;">
-                Novel<span style="color:#ff2d55; transition:transform 0.3s ease;">Xplainer</span>
-            </h2>
-            <p style="font-size:13px; line-height:1.7; max-width:550px; margin:auto; color:#9ca3af; font-weight:400;">
+        <div class="nx-footer-brand">
+            <div class="nx-brand-title-wrap" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <div class="nx-eq-bars" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+                <h2 class="nx-brand-title">
+                    Novel<span class="nx-brand-highlight">Xplainer</span>
+                </h2>
+            </div>
+            <p class="nx-brand-desc">
                 NovelXplainer Digital Web Services provides digital content and web-based services with a simple, secure and user-friendly experience.
             </p>
         </div>
 
         <!-- Divider -->
-        <div style="height:1px; background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.12), rgba(255,255,255,0)); margin:30px 0;"></div>
+        <div class="nx-divider"></div>
 
         <!-- Contact & Social Information -->
-        <div style="text-align:center; margin-bottom:30px;">
-            <h3 style="color:#fff; font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:18px; opacity:0.9;">
-                Contact & Support
-            </h3>
+        <div style="text-align:center;">
+            <h3 class="nx-sec-heading">Contact & Support</h3>
 
-            <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:14px 30px; font-size:13px;">
-
-                <a href="tel:+917735021399" style="color:#c4c4d4; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:color 0.2s ease, transform 0.2s ease;" onmouseover="this.style.color='#ff2d55'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c4c4d4'; this.style.transform='translateY(0)';">
-                    <span style="font-size:15px;">📞</span> +91 7735021399
+            <div class="nx-contact-grid">
+                <a href="tel:+917735021399" class="nx-contact-pill">
+                    <span class="nx-contact-icon">📞</span> +91 7735021399
                 </a>
 
-                <a href="mailto:support@novelxplainer.com" style="color:#c4c4d4; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:color 0.2s ease, transform 0.2s ease;" onmouseover="this.style.color='#ff2d55'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c4c4d4'; this.style.transform='translateY(0)';">
-                    <span style="font-size:15px;">✉</span> support@novelxplainer.com
+                <a href="mailto:support@novelxplainer.com" class="nx-contact-pill">
+                    <span class="nx-contact-icon">✉️</span> support@novelxplainer.com
                 </a>
 
                 <!-- Telegram Bot Link -->
-                <a href="https://t.me/NV_AUDIOBOOKBOT" target="_blank" rel="noopener noreferrer" style="color:#c4c4d4; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:color 0.2s ease, transform 0.2s ease;" onmouseover="this.style.color='#0088cc'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c4c4d4'; this.style.transform='translateY(0)';">
-                    <span style="font-size:15px;">🤖</span> Telegram Bot (@NV_AUDIOBOOKBOT)
+                <a href="https://t.me/NV_AUDIOBOOKBOT" target="_blank" rel="noopener noreferrer" class="nx-contact-pill tg-pill">
+                    <span class="nx-contact-icon">🤖</span> Telegram Bot (@NV_AUDIOBOOKBOT)
                 </a>
 
                 <!-- Telegram Channel Link -->
-                <a href="https://t.me/NovelXplainer01" target="_blank" rel="noopener noreferrer" style="color:#c4c4d4; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:color 0.2s ease, transform 0.2s ease;" onmouseover="this.style.color='#0088cc'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c4c4d4'; this.style.transform='translateY(0)';">
-                    <span style="font-size:15px;">📢</span> Telegram Channel (@NovelXplainer01)
+                <a href="https://t.me/NovelXplainer01" target="_blank" rel="noopener noreferrer" class="nx-contact-pill tg-pill">
+                    <span class="nx-contact-icon">📢</span> Telegram Channel (@NovelXplainer01)
                 </a>
 
-                <span style="color:#c4c4d4; display:inline-flex; align-items:center; gap:6px;">
-                    <span style="font-size:15px;">📍</span> Odisha, India
+                <span class="nx-contact-pill" style="cursor:default;">
+                    <span class="nx-contact-icon">📍</span> Odisha, India
                 </span>
-
             </div>
         </div>
 
         <!-- Policies -->
-        <div style="text-align:center; margin:30px 0;">
-            <h3 style="color:#fff; font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:18px; opacity:0.9;">
-                Legal Information
-            </h3>
+        <div style="text-align:center; margin-top: 10px;">
+            <h3 class="nx-sec-heading">Legal Information</h3>
 
-            <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:12px 25px;">
-
-                <a href="#terms" onclick="alert('Terms & Conditions: By using NovelXplainer Digital Web Services, you agree to the applicable service terms and selected subscription plan.')"
-                   style="color:#ff5272; font-size:12px; font-weight:500; text-decoration:none; padding:6px 12px; background:rgba(255,82,114,0.06); border-radius:6px; border:1px solid rgba(255,82,114,0.15); transition:all 0.2s ease;" onmouseover="this.style.background='rgba(255,82,114,0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255,82,114,0.06)'; this.style.transform='translateY(0)';">
-                    Terms & Conditions
+            <div class="nx-policy-row">
+                <a href="#terms" class="nx-policy-btn" onclick="alert('Terms & Conditions: By using NovelXplainer Digital Web Services, you agree to the applicable service terms and selected subscription plan.')">
+                    📜 Terms & Conditions
                 </a>
 
-                <a href="#privacy" onclick="alert('Privacy Policy: We use necessary account information for login, service delivery and subscription verification. We take reasonable steps to protect your information.')"
-                   style="color:#ff5272; font-size:12px; font-weight:500; text-decoration:none; padding:6px 12px; background:rgba(255,82,114,0.06); border-radius:6px; border:1px solid rgba(255,82,114,0.15); transition:all 0.2s ease;" onmouseover="this.style.background='rgba(255,82,114,0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255,82,114,0.06)'; this.style.transform='translateY(0)';">
-                    Privacy Policy
+                <a href="#privacy" class="nx-policy-btn" onclick="alert('Privacy Policy: We use necessary account information for login, service delivery and subscription verification. We take reasonable steps to protect your information.')">
+                    🛡️ Privacy Policy
                 </a>
 
-                <a href="#refund" onclick="alert('Refund & Cancellation Policy: Activated digital subscriptions are generally non-refundable. Duplicate payments and verified payment issues will be reviewed for appropriate resolution.')"
-                   style="color:#ff5272; font-size:12px; font-weight:500; text-decoration:none; padding:6px 12px; background:rgba(255,82,114,0.06); border-radius:6px; border:1px solid rgba(255,82,114,0.15); transition:all 0.2s ease;" onmouseover="this.style.background='rgba(255,82,114,0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255,82,114,0.06)'; this.style.transform='translateY(0)';">
-                    Refund & Cancellation
+                <a href="#refund" class="nx-policy-btn" onclick="alert('Refund & Cancellation Policy: Activated digital subscriptions are generally non-refundable. Duplicate payments and verified payment issues will be reviewed for appropriate resolution.')">
+                    💳 Refund & Cancellation
                 </a>
-
             </div>
         </div>
 
         <!-- Company Information -->
-        <div style="text-align:center; margin:30px 0; background:rgba(255,255,255,0.02); padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); max-width:600px; margin-left:auto; margin-right:auto;">
-            <p style="font-size:12px; color:#77778d; margin:4px 0;">
-                <strong style="color:#c4c4d4; font-weight:600;">Business Name:</strong>
+        <div class="nx-company-card">
+            <p class="nx-company-item">
+                <strong>Business Name</strong>
                 NovelXplainer Digital Web Services
             </p>
 
-            <p style="font-size:12px; color:#77778d; margin:4px 0;">
-                <strong style="color:#c4c4d4; font-weight:600;">Operated By:</strong>
+            <p class="nx-company-item">
+                <strong>Operated By</strong>
                 Sibaram Patra
             </p>
 
-            <p style="font-size:12px; color:#77778d; margin:4px 0;">
-                <strong style="color:#c4c4d4; font-weight:600;">Location:</strong>
+            <p class="nx-company-item">
+                <strong>Location</strong>
                 Odisha, India
             </p>
         </div>
 
         <!-- Bottom -->
-        <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:20px; text-align:center;">
+        <div class="nx-footer-bottom">
+            <div style="text-align:left;">
+                <p style="font-size:12px; color:#8b8b9e; margin:0 0 4px;">
+                    © 2026 <span style="color:#ff2d55; font-weight:700;">NovelXplainer</span>. All Rights Reserved.
+                </p>
+                <p style="font-size:11px; color:#66667a; margin:0; letter-spacing:0.3px;">
+                    Designed for a better digital audio experience.
+                </p>
+            </div>
 
-            <p style="font-size:11px; color:#77778d; margin:0 0 6px;">
-                © 2026 <span style="color:#ff2d55; font-weight:700;">NovelXplainer</span>. All Rights Reserved.
-            </p>
-
-            <p style="font-size:10px; color:#66667a; margin:0; letter-spacing:0.3px;">
-                Designed for a better digital experience.
-            </p>
-
+            <button type="button" class="nx-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                ↑ Back to Top
+            </button>
         </div>
 
     </div>
