@@ -8,7 +8,7 @@ import re
 import hmac
 import hashlib
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezonea
 from threading import Thread
 from typing import Tuple, Optional
 from contextlib import suppress
@@ -30,7 +30,7 @@ from telebot.apihelper import ApiTelegramException
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, request, jsonify, Response, render_template_string, stream_with_context
+from flask import Flask, request, jsonify, Response, render_template_string, stream_with_context, redirect
 import asyncio
 import queue
 from threading import Event
@@ -114,6 +114,60 @@ collections = {
 
 # --- SERVER & LIVE RAZORPAY WEBHOOK + WEBSITE & MTPROTO HYBRID STREAMING (v5) ---
 app = Flask(__name__)
+
+# --- GOOGLE OAUTH SETUP ---
+GOOGLE_CLIENT_ID = "aapka_google_client_id_yahan_daalein"
+GOOGLE_CLIENT_SECRET = "aapka_google_client_secret_yahan_daalein"
+GOOGLE_REDIRECT_URI = "https://novelexplainer-audio.onrender.com/auth/google/callback"
+
+@app.route('/auth/google')
+def google_login():
+    google_url = f"https://accounts.google.com/o/oauth2/v2/auth?client_id={GOOGLE_CLIENT_ID}&redirect_uri={GOOGLE_REDIRECT_URI}&response_type=code&scope=email profile"
+    return redirect(google_url)
+
+@app.route('/auth/google/callback')
+def google_callback():
+    import requests
+    code = request.args.get('code')
+    if not code:
+        return redirect("/?error=google_auth_failed")
+    
+    token_resp = requests.post("https://oauth2.googleapis.com/token", data={
+        "client_id": GOOGLE_CLIENT_ID,
+        "client_secret": GOOGLE_CLIENT_SECRET,
+        "code": code,
+        "grant_type": "authorization_code",
+        "redirect_uri": GOOGLE_REDIRECT_URI
+    }).json()
+
+    access_token = token_resp.get("access_token")
+    if not access_token:
+        return redirect("/?error=token_failed")
+
+    user_info = requests.get(
+        "https://www.googleapis.com/oauth2/v2/userinfo", 
+        headers={"Authorization": f"Bearer {access_token}"}
+    ).json()
+
+    real_email = user_info.get("email")
+    real_name = user_info.get("name", "Google User")
+    if not real_email:
+        return redirect("/?error=no_email")
+
+    generated_uid = abs(hash(real_email)) % (10**9)
+
+    collections["users"].update_one(
+        {"user_id": generated_uid},
+        {"$set": {
+            "phone": real_email,
+            "account_name": real_name,
+            "auth_method": "google",
+            "last_seen": time.time()
+        }},
+        upsert=True
+    )
+
+    return redirect(f"/?login_success=1&method=google&email={real_email}&name={real_name}&uid={generated_uid}")
 
 WEB_HTML_Candidates = ("index.html", "index (12).html", "index-v8_compact.html", "index-v7_pocketfm.html", "index-v6_pocketfm.html")
 
