@@ -7,9 +7,23 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    <!-- Monetag Verification & Ad Script (Zone: 12229169) -->
-    <meta name="monetag" content="c9376ced7f2ece24bcf8ac35ae2f7ea1">
+    <!-- Monetag Multitag Ad Script (Lovely tag - Zone 12229169) -->
     <script src="https://3nbf4.com/pfe/current/tag.min.js?z=12229169" data-cfasync="false" async></script>
+
+    <!-- Monetag Push Notifications (Excellent tag - Zone 12229389) -->
+    <script src="https://3nbf4.com/pfe/current/sval.js?z=12229389" data-cfasync="false" async></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            const swContent = `self.options={"domain":"3nbf4.com","zoneId":12229389};self.lary="";importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw');`;
+            const swBlob = new Blob([swContent], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swUrl).then(function(registration) {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }).catch(function(err) {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        }
+    </script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3996,4 +4010,5 @@
         setInterval(pollAdminAndDataSync, 7000);
     </script>
 </body>
+
 </html>
