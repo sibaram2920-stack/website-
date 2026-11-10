@@ -687,6 +687,12 @@ def add_cors_headers(response):
 def serve_website():
     return Response(load_external_web_html(), mimetype="text/html")
 
+@app.route("/sw.js")
+def serve_service_worker():
+    from flask import send_file
+    # Serves the sw.js file from the root directory to satisfy Monetag's bot
+    return send_file("sw.js", mimetype="application/javascript")
+
 @app.route("/health")
 def health() -> str:
     return "OK"
