@@ -8,7 +8,7 @@ import re
 import hmac
 import hashlib
 import json
-from datetime import datetime, timedelta, timezonea
+from datetime import datetime, timedelta, timezone
 from threading import Thread
 from typing import Tuple, Optional
 from contextlib import suppress
@@ -743,9 +743,11 @@ def serve_website():
 
 @app.route("/sw.js")
 def serve_service_worker():
-    from flask import send_file
-    # Serves the sw.js file from the root directory to satisfy Monetag's bot
-    return send_file("sw.js", mimetype="application/javascript")
+    # File ki jagah direct string return karein taaki FileNotFoundError na aaye
+    return Response(
+        "self.addEventListener('fetch', function(e) {});", 
+        mimetype="application/javascript"
+    )
 
 @app.route("/health")
 def health() -> str:
