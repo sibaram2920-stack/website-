@@ -116,8 +116,8 @@ collections = {
 app = Flask(__name__)
 
 # --- GOOGLE OAUTH SETUP ---
-GOOGLE_CLIENT_ID = "aapka_google_client_id_yahan_daalein"
-GOOGLE_CLIENT_SECRET = "aapka_google_client_secret_yahan_daalein"
+GOOGLE_CLIENT_ID = "385868355262-ka789thkjhq9g756de6os7vp9va8683e.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
 GOOGLE_REDIRECT_URI = "https://novelexplainer-audio.onrender.com/auth/google/callback"
 
 @app.route('/auth/google')
